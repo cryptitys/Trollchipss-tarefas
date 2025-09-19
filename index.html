@@ -1,0 +1,126 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>TROLLCHIPS</title>
+    <!-- Tailwind CSS CDN -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- Fontes Inter e Montserrat -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@600;700;800&display=swap" rel="stylesheet">
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css">
+    
+  <!-- Chamar o CSS -->
+  <link rel="stylesheet" href="src/css/style.css">
+</head>
+<body class="bg-gray-900 text-white font-inter">
+
+<!-- Header -->
+<header class="flex items-center p-4 bg-gray-800">
+    <a href="#" class="flex items-center gap-2 text-blue-400 hover:text-blue-500">
+        <i class="fas fa-arrow-left"></i> Voltar
+    </a>
+</header>
+
+<!-- Preloader -->
+<div id="preloader" class="flex flex-col items-center justify-center h-screen bg-gray-900">
+    <div class="loader mb-4"></div>
+    <div class="loading-text text-gray-400">Carregando...</div>
+</div>
+
+<!-- Partículas (opcional) -->
+<div id="particle-container"></div>
+
+<!-- Loading Overlay -->
+<div id="loadingOverlay" class="fixed inset-0 bg-black bg-opacity-70 flex flex-col items-center justify-center hidden z-50">
+    <img src="https://trollchipss.netlify.app/logo-trollchips.png" alt="Logo" class="mb-5 rounded-full w-20 h-20">
+    <p class="loading-title text-xl font-semibold">Carregando...</p>
+    <p class="loading-message text-gray-300">Sincronizando dados.</p>
+</div>
+
+<!-- Modal Login -->
+<div id="loginModal" class="modal fixed inset-0 bg-black bg-opacity-70 flex items-center justify-center z-50">
+    <div class="modal-content bg-gray-800 p-6 rounded-lg w-80 text-center">
+        <i class="fas fa-moon text-blue-400 text-5xl mb-3"></i>
+        <h2 class="text-2xl font-bold mb-2">TROLLCHIPS 》《 TarefaS</h2>
+        <p class="text-gray-300 mb-4">Log in with your credentials.</p>
+        <form id="authForm" class="flex flex-col gap-3">
+            <input type="text" id="ra" name="ra" required placeholder="Seu RA" class="p-2 rounded bg-gray-700">
+            <div class="relative">
+                <input type="password" id="password" name="password" required placeholder="Sua senha" class="p-2 rounded bg-gray-700 w-full">
+                <i class="fas fa-eye absolute right-2 top-2 cursor-pointer" id="togglePasswordLogin"></i>
+            </div>
+            <div class="flex justify-between mt-3">
+                <button type="submit" class="bg-blue-600 hover:bg-blue-700 rounded px-4 py-2">Entrar</button>
+                <button type="button" class="bg-purple-600 hover:bg-purple-700 rounded px-4 py-2" onclick="window.open('https://trollchipss.netlify.app')">Discord</button>
+            </div>
+        </form>
+    </div>
+</div>
+
+<!-- Modal de Processamento de Tarefa Individual -->
+<div id="taskProcessingModal" class="modal fixed inset-0 bg-black bg-opacity-70 flex items-center justify-center hidden z-50">
+    <div class="bg-gray-800 p-6 rounded-lg w-96">
+        <h3 id="processingModalTitle" class="text-xl font-bold text-center mb-4">Processando Tarefa</h3>
+        <div id="processingTaskDetails" class="bg-gray-700 p-3 rounded mb-4">
+            <div class="flex justify-between mb-2">
+                <p id="modalProcessingSubject" class="font-semibold"></p>
+                <span id="modalProcessingStatus" class="text-sm"></span>
+            </div>
+            <p id="modalProcessingTitle" class="text-lg mb-2"></p>
+            <p id="modalProcessingDescription" class="text-gray-300 text-sm"></p>
+            <hr class="border-gray-600 my-2">
+            <p><b>ID:</b> <span id="modalProcessingTaskId"></span></p>
+            <p><b>Primeiro Acesso:</b> <span id="modalProcessingFirstAccess"></span></p>
+        </div>
+        <div class="flex gap-2 mb-3">
+            <input type="number" id="minTime" placeholder="Tempo mín." class="p-2 rounded bg-gray-700 w-1/2">
+            <input type="number" id="maxTime" placeholder="Tempo máx." class="p-2 rounded bg-gray-700 w-1/2">
+        </div>
+        <div class="flex justify-between">
+            <button id="saveDraftButton" class="bg-green-600 hover:bg-green-700 px-4 py-2 rounded">Salvar Rascunho</button>
+            <button id="doTaskButton" class="bg-blue-600 hover:bg-blue-700 px-4 py-2 rounded">Fazer Tarefa</button>
+        </div>
+    </div>
+</div>
+
+<!-- Modal de Processamento em Lote -->
+<div id="batchProcessingModal" class="modal fixed inset-0 bg-black bg-opacity-70 flex items-center justify-center hidden z-50">
+    <div class="bg-gray-800 p-6 rounded-lg w-96">
+        <h3 class="text-xl font-bold text-center mb-4">Processar Tarefas em Lote</h3>
+        <div class="flex gap-2 mb-3">
+            <input type="number" id="batchMinTime" placeholder="Tempo mín." class="p-2 rounded bg-gray-700 w-1/2">
+            <input type="number" id="batchMaxTime" placeholder="Tempo máx." class="p-2 rounded bg-gray-700 w-1/2">
+        </div>
+        <div class="flex gap-2 mb-3">
+            <button id="batchSelectAll" class="bg-blue-600 hover:bg-blue-700 px-2 py-1 rounded text-xs">Selecionar Todas</button>
+            <button id="batchSelectAllDraft" class="bg-green-600 hover:bg-green-700 px-2 py-1 rounded text-xs">Todas como Rascunho</button>
+            <button id="batchDeselectAll" class="bg-gray-600 hover:bg-gray-700 px-2 py-1 rounded text-xs">Limpar Seleção</button>
+        </div>
+        <div id="batchTasksList" class="bg-gray-700 p-3 rounded h-48 overflow-y-auto text-sm mb-3">
+            <p class="text-gray-400 text-center">Nenhuma tarefa pendente encontrada.</p>
+        </div>
+        <div class="flex justify-between">
+            <button id="closeBatchProcessingModal" class="bg-gray-600 hover:bg-gray-700 px-4 py-2 rounded">Cancelar</button>
+            <button id="processSelectedTasksButton" class="bg-blue-600 hover:bg-blue-700 px-4 py-2 rounded">Processar Selecionadas</button>
+        </div>
+    </div>
+</div>
+
+<!-- Modal de Notificações -->
+<div id="notificationContainer" class="fixed top-5 right-5 z-50 flex flex-col gap-2"></div>
+
+<!-- Dashboard Principal -->
+<div id="mainSection" class="hidden p-6">
+    <h2 class="text-2xl font-bold mb-4">Tarefa SP</h2>
+    <div id="tasksContent" class="grid grid-cols-1 gap-3">
+        <p id="noTasks" class="text-gray-400 text-center col-span-full">Nenhuma tarefa encontrada.</p>
+    </div>
+</div>
+
+<!-- Scripts -->
+<script src="src/js/script.js"></script>
+</body>
+  </html>
