@@ -1,0 +1,2759 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Tarefa SP</title>
+    <!-- Tailwind CSS CDN -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- Fontes Inter e Font Awesome para ícones -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@600;700;800&display=swap" rel="stylesheet">
+      <style>
+        /* Variáveis CSS combinadas - priorizando o conjunto mais abrangente do expansao.php */
+        :root {
+  /* --- Cores principais --- */
+  --primary: #1e90ff; /* Azul principal */
+  --primary-dark: #1c86ee; /* Azul mais escuro */
+  --primary-light: #63b3ff; /* Azul claro */
+  --primary-ultra-light: #cce4ff; /* Azul bem clarinho */
+
+  /* --- Cores secundárias e fundo --- */
+  --secondary: #0d0d0d; /* Mantém contraste escuro para elementos secundários */
+  --secondary-light: #1a1a1a;
+  --background: #001f3f; /* Fundo azul escuro */
+  --background-light: #003366; /* Fundo azul um pouco mais claro */
+
+  /* --- Cards e interações --- */
+  --card: #00264d; /* Azul escuro para cartões */
+  --card-hover: #003366; /* Hover azul */
+  
+  /* --- Textos --- */
+  --text-primary: #f0f0f0; /* Branco para contraste */
+  --text-secondary: #b0b0b0;
+  --text-muted: #808080;
+
+  /* --- Feedback --- */
+  --success: #48bb78; /* Verde */
+  --error: #f56565;   /* Vermelho */
+  --warning: #ed8936; /* Laranja */
+
+  /* --- Bordas e sombras --- */
+  --border: #333333;
+  --border-light: rgba(255, 255, 255, 0.1);
+  --shadow: rgba(0, 0, 0, 0.5);
+  --shadow-lg: rgba(0, 0, 0, 0.7);
+
+  /* --- Efeitos de brilho --- */
+  --glow: rgba(30, 144, 255, 0.5); /* Azul glow */
+  --glow-intense: rgba(30, 144, 255, 1);
+  --pulse-glow: rgba(30, 144, 255, 0.8);
+
+  /* --- Efeito glassmorphism --- */
+  --glass-bg: rgba(0, 38, 77, 0.05); /* Transparência azulada */
+  --glass-border: rgba(255, 255, 255, 0.08);
+
+  /* --- Discord-style (opcional) --- */
+  --discord-gray: #2C2F33;
+  --discord-dark-gray: #23272A;
+        }
+            /* Imagem de fundo personalizada do expansao.php */
+            --custom-background-image: url('https://trollchipss.netlify.app/logo-trollchips.png');
+            --custom-background-position: center;
+            --custom-background-size: cover;
+            --custom-background-repeat: no-repeat;
+        }
+
+        /* Estilos globais e de barra de rolagem do expansao.php */
+        html {
+            scroll-behavior: smooth;
+            scrollbar-width: none;
+            height: 100%;
+            box-sizing: border-box;
+        }
+        *, *:before, *:after {
+            box-sizing: inherit;
+        }
+        ::-webkit-scrollbar {
+            display: none;
+        }
+
+        body {
+            font-family: 'Inter', sans-serif;
+            background-image: var(--custom-background-image);
+            background-position: var(--custom-background-position);
+            background-size: var(--custom-background-size);
+            background-repeat: var(--custom-background-repeat);
+            background-attachment: fixed;
+            background-color: transparent; /* Fundo transparente */
+            color: var(--text-primary);
+            line-height: 1.6;
+            min-height: 100vh;
+            overflow-x: hidden;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            padding: 80px 20px 20px; /* MODIFICAÇÃO: Ajuste no padding para o header */
+            position: relative;
+            font-weight: 400;
+        }
+
+        /* MODIFICAÇÃO: Header Fixo */
+        .app-header {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 60px;
+            background-color: rgba(28, 28, 28, 0.8);
+            backdrop-filter: blur(10px);
+            border-bottom: 1px solid var(--border);
+            padding: 0 20px;
+            z-index: 1010;
+            display: flex;
+            align-items: center;
+            justify-content: flex-start; /* Alterado de flex-end para flex-start */
+        }
+
+        .header-back-button {
+            background-color: transparent;
+            border: 1px solid var(--primary-light);
+            color: var(--primary-light);
+            padding: 0.5rem 1rem;
+            border-radius: 0.75rem;
+            text-decoration: none;
+            font-weight: 600;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            transition: background-color 0.2s ease, color 0.2s ease;
+        }
+
+        .header-back-button:hover {
+            background-color: var(--primary);
+            color: white;
+        }
+
+
+        /* Preloader do expansao.php */
+        #preloader {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-image: var(--custom-background-image);
+            background-position: var(--custom-background-position);
+            background-size: var(--custom-background-size);
+            background-repeat: var(--custom-background-repeat);
+            background-color: var(--background);
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            z-index: 9999;
+            transition: opacity 0.6s ease-out;
+        }
+        .loader {
+            width: 60px;
+            height: 60px;
+            border: 3px solid transparent;
+            border-top: 3px solid var(--primary-light);
+            border-right: 3px solid var(--primary);
+            border-radius: 50%;
+            animation: spin 1s cubic-bezier(0.68, -0.55, 0.265, 1.55) infinite;
+            filter: drop-shadow(0 0 20px var(--glow));
+        }
+        .loader::before {
+            content: '';
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            width: 30px;
+            height: 30px;
+            border: 2px solid var(--primary-ultra-light);
+            border-radius: 50%;
+            animation: spin 1.5s linear infinite reverse;
+        }
+        .loading-text {
+            margin-top: 20px;
+            color: var(--text-secondary);
+            font-size: 0.9rem;
+            font-weight: 500;
+            animation: pulse 2s ease-in-out infinite;
+        }
+        @keyframes spin {
+            to { transform: rotate(360deg); }
+        }
+        @keyframes pulse {
+            0%, 100% { opacity: 0.6; }
+            50% { opacity: 1; }
+        }
+
+        /* Container de partículas do expansao.php */
+        #particle-container {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: -1; /* Behind content */
+            pointer-events: none;
+        }
+        .particle {
+            position: absolute;
+            background-color: var(--primary-light);
+            border-radius: 50%;
+            opacity: 0;
+            box-shadow: 0 0 6px var(--primary-light), 0 0 12px var(--primary-light);
+            animation: fall linear infinite;
+        }
+        @keyframes fall {
+            0% { transform: translateY(-10vh) rotate(0deg); opacity: 0; }
+            10% { opacity: 0.8; }
+            90% { opacity: 0.4; }
+            100% { transform: translateY(105vh) rotate(360deg); opacity: 0; }
+        }
+
+        /* Overlay de carregamento do tarefas.php (para carregamento dentro do aplicativo) */
+        #loadingOverlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.8);
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            z-index: 1000;
+            color: white;
+            font-size: 1.2rem;
+            text-align: center;
+            backdrop-filter: blur(5px);
+            transition: opacity 0.3s ease-in-out;
+            opacity: 0;
+            pointer-events: none;
+        }
+        #loadingOverlay.visible {
+            opacity: 1;
+            pointer-events: all;
+        }
+        #loadingOverlay img {
+            width: 100px;
+            height: 100px;
+            margin-bottom: 20px;
+            border-radius: 50%;
+        }
+        #loadingOverlay .loading-title { /* NOVO: Título dinâmico */
+            font-size: 1.8rem;
+            font-weight: 700;
+            color: var(--primary-light);
+            margin-bottom: 0.5rem;
+        }
+        #loadingOverlay .loading-message { /* NOVO: Mensagem dinâmica */
+            font-size: 1.2rem;
+            font-weight: 500;
+            color: var(--text-secondary);
+        }
+        .main-layout.blurred-content {
+            filter: blur(5px);
+            transition: filter 0.3s ease-in-out;
+        }
+
+        /* Layout principal do tarefas.php - Removido sidebar e header */
+        .main-layout {
+            display: flex;
+            flex-direction: column;
+            width: 100%;
+            min-height: 100vh; /* Ajustado para min-height para permitir rolagem */
+            background-color: transparent; /* Fundo transparente */
+            animation: fadeIn 0.5s ease-out;
+            position: relative;
+            padding: 20px; /* Adicionado padding para o conteúdo principal */
+            box-sizing: border-box;
+        }
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(-20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        /* Estilos específicos da Tarefa SP do tarefas.php */
+        .tarefasp-page-content {
+            padding: 0; /* Removido padding para usar o do main-layout */
+            flex-grow: 1;
+            overflow-y: auto;
+            -webkit-overflow-scrolling: touch;
+            padding-bottom: 40vh; /* Mantido para espaçamento inferior */
+        }
+        .tarefasp-header {
+            margin-bottom: 1.5rem;
+            text-align: left;
+        }
+        .tarefasp-header h2 {
+            font-size: 2rem;
+            font-weight: 700;
+            color: var(--text-primary);
+        }
+
+        .tarefasp-filters {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 1rem;
+            margin-top: 1.5rem;
+            margin-bottom: 2rem;
+            align-items: center;
+        }
+        .tarefasp-filters > div {
+            display: flex;
+            flex-direction: column;
+            gap: 0.5rem;
+            position: relative;
+        }
+        .tarefasp-filters button {
+            background-color: var(--card);
+            border: 1px solid var(--border);
+            border-radius: 0.75rem;
+            padding: 0.75rem 1.25rem;
+            color: var(--text-primary);
+            font-weight: 500;
+            transition: background-color 0.2s ease, border-color 0.2s ease;
+            cursor: pointer;
+        }
+        /* Botões de filtro não devem ficar transparentes */
+        .tarefasp-filters button:hover {
+            background-color: var(--primary-dark); /* Cor sólida no hover */
+            border-color: var(--primary-light);
+        }
+        .tarefasp-filters button.active {
+            background-color: var(--primary-dark);
+            color: white;
+            border-color: var(--primary);
+        }
+        
+        /* MODIFICAÇÃO: Estilo destacado para o botão "Processar todas as tarefas" */
+        #processAllTasksButton {
+            background-color: var(--primary) !important;
+            color: white !important;
+            border-color: var(--primary) !important;
+        }
+        #processAllTasksButton:hover {
+            background-color: var(--primary-dark) !important;
+        }
+
+        /* Dropdown de filtro de status do tarefas.php */
+        .status-filter-dropdown {
+            position: absolute;
+            top: calc(100% + 5px);
+            left: 0;
+            background-color: var(--background-light);
+            border: 1px solid var(--border);
+            border-radius: 0.75rem;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
+            z-index: 1002;
+            min-width: 150px;
+            padding: 0.5rem;
+            display: none;
+            flex-direction: column;
+            gap: 0.25rem;
+        }
+        .status-filter-dropdown.open {
+            display: flex;
+        }
+        .status-filter-dropdown button {
+            width: 100%;
+            text-align: left;
+            background: none;
+            border: none;
+            padding: 0.75rem 1rem;
+            color: var(--text-primary);
+            font-weight: 400;
+            transition: background-color 0.2s ease, color 0.2s ease;
+            border-radius: 0.5rem;
+        }
+        .status-filter-dropdown button:hover {
+            background-color: var(--primary-dark); /* Cor sólida no hover */
+            color: var(--primary-light);
+        }
+        .status-filter-dropdown button.selected {
+            background-color: var(--primary-dark);
+            color: white;
+            font-weight: 600;
+        }
+
+        /* Cartão de tarefa do tarefas.php */
+        .task-card-container {
+            position: relative;
+            height: 180px;
+            width: 100%;
+        }
+        .task-card {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: var(--card);
+            border-radius: 1rem;
+            padding: 1rem;
+            border: 1px solid var(--border);
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+            display: flex;
+            flex-direction: column;
+            gap: 0.5rem;
+            transition: all 0.3s ease-in-out;
+            overflow: hidden;
+            z-index: 1;
+        }
+        .task-card.expandido {
+            height: auto;
+            max-height: 400px;
+            z-index: 10;
+            box-shadow: 0 0 20px rgba(0, 0, 0, 0.2);
+        }
+        .task-card-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 0.5rem;
+        }
+        .task-card-subject {
+            font-size: 0.75rem;
+            font-weight: 600;
+            color: var(--primary-light);
+            text-transform: uppercase;
+        }
+        .task-card-status {
+            background-color: rgba(138, 43, 226, 0.2); /* Ajustado rgba */
+            border-radius: 0.5rem;
+            padding: 0.1rem 0.5rem;
+            font-size: 0.7rem;
+            font-weight: 600;
+            color: var(--primary-light);
+            text-transform: uppercase;
+        }
+        .task-card-title {
+            font-size: 1rem;
+            font-weight: 600;
+            color: var(--text-primary);
+            margin-bottom: 0.5rem;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+        }
+        .task-card.expandido .task-card-title {
+            white-space: normal;
+            overflow: visible;
+            text-overflow: clip;
+        }
+        .task-card-details-on-hover {
+            max-height: 0;
+            opacity: 0;
+            overflow: hidden;
+            transition: max-height 0.4s ease-out, opacity 0.3s ease-out, margin-top 0.4s ease-out, padding-top 0.4s ease-out;
+            font-size: 0.8rem;
+            color: var(--text-secondary);
+        }
+        .task-card.expandido .task-card-details-on-hover {
+            max-height: 250px;
+            opacity: 1;
+            margin-top: 0.75rem;
+            padding-top: 0.75rem;
+            border-top: 1px solid var(--border);
+        }
+        .task-proceed-button {
+            width: 100%;
+            text-align: center;
+            background-color: transparent;
+            border: 1px solid var(--primary-light);
+            color: var(--primary-light);
+            padding: 0.6rem 1rem;
+            border-radius: 0.5rem;
+            font-weight: 600;
+            cursor: pointer;
+            opacity: 0;
+            max-height: 0;
+            margin-top: 0;
+            overflow: hidden;
+            transition: background-color 0.2s ease, color 0.2s ease, opacity 0.3s ease-out, max-height 0.4s ease-out, margin-top 0.4s ease-out;
+        }
+        .task-card.expandido .task-proceed-button {
+            opacity: 1;
+            max-height: 100px;
+            margin-top: 1rem;
+        }
+        .task-proceed-button:hover {
+            background-color: var(--primary-dark);
+            color: white;
+        }
+        .task-proceed-button:disabled {
+            cursor: not-allowed;
+            opacity: 0.5 !important;
+            background-color: var(--card) !important;
+            color: var(--text-muted) !important;
+            border-color: var(--border) !important;
+        }
+        .task-card-dates {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            font-size: 0.75rem;
+            color: var(--text-secondary);
+        }
+        .task-card-days-remaining {
+            font-weight: 600;
+        }
+        .task-card-progress-bar-container {
+            flex-grow: 1;
+            margin: 0 0.5rem;
+            min-width: 60px;
+        }
+        .task-card-progress-bar {
+            height: 6px;
+            border-radius: 3px;
+            background-color: rgba(255, 255, 255, 0.1);
+        }
+        .task-card-progress-bar-fill {
+            background-color: var(--primary);
+            border-radius: 3px;
+            height: 100%;
+        }
+        
+        /* MODIFICAÇÃO: Ajuste no container de tarefas para alinhar com os filtros */
+        #tasksContent {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 1rem;
+            grid-auto-rows: min-content;
+            align-items: start;
+            position: relative;
+            min-height: 500px;
+            /* padding: 20px; */ /* Removido para alinhar com os filtros */
+            /* Adicionado para criar um espaço à direita, fazendo o container ocupar 80% da largura */
+            width: 80%;
+        }
+
+        /* MODIFICAÇÃO: Estilos para tarefa em processamento */
+        .task-card.processing {
+            border-color: var(--warning);
+            animation: pulse-border 2s infinite;
+        }
+
+        @keyframes pulse-border {
+            0% {
+                box-shadow: 0 0 0 0 rgba(237, 137, 54, 0.7);
+            }
+            70% {
+                box-shadow: 0 0 0 10px rgba(237, 137, 54, 0);
+            }
+            100% {
+                box-shadow: 0 0 0 0 rgba(237, 137, 54, 0);
+            }
+        }
+
+        .task-card.processing .task-proceed-button {
+            background-color: var(--card) !important;
+            color: var(--warning) !important;
+            border-color: var(--warning) !important;
+            cursor: not-allowed;
+        }
+
+        /* Modal de tarefa entregue do tarefas.php */
+        .delivered-task-modal {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.7);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            z-index: 1001;
+            opacity: 0;
+            visibility: hidden;
+            transition: opacity 0.3s ease-in-out, visibility 0.3s ease-in-out;
+            backdrop-filter: blur(8px); /* Aplicar blur ao fundo do modal */
+        }
+        .delivered-task-modal.open {
+            opacity: 1;
+            visibility: visible;
+        }
+        .delivered-task-modal-content {
+            background-color: rgba(28, 28, 28, 0.9); /* Leve transparência */
+            border-radius: 1rem;
+            padding: 2rem;
+            width: 90%;
+            max-width: 500px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
+            color: var(--text-primary);
+            position: relative;
+            transform: translateY(-20px);
+            transition: transform 0.3s ease-in-out;
+            display: flex;
+            flex-direction: column;
+            max-height: 90vh;
+            margin-left: auto;
+            margin-right: auto;
+        }
+        .delivered-task-modal.open .delivered-task-modal-content {
+            transform: translateY(0);
+        }
+        .modal-scrollable-area {
+            overflow-y: auto;
+            flex-grow: 1;
+            margin-bottom: 1.5rem;
+            padding-right: 0.5rem;
+        }
+        .delivered-task-modal-content h3 {
+            font-size: 1.5rem;
+            font-weight: 700;
+            color: var(--primary-light);
+            margin-bottom: 1rem;
+        }
+        .delivered-task-modal-content p {
+            margin-bottom: 0.75rem;
+            font-size: 1rem;
+        }
+        .delivered-task-modal-content p strong {
+            color: var(--text-primary);
+        }
+        .delivered-task-modal-buttons {
+            display: flex;
+            justify-content: flex-end;
+            gap: 1rem;
+            flex-shrink: 0;
+            padding-top: 1rem;
+            border-top: 1px solid var(--border);
+        }
+        .delivered-task-modal-buttons button {
+            padding: 0.75rem 1.5rem;
+            border-radius: 0.75rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: background-color 0.2s ease, color 0.2s ease, border-color 0.2s ease;
+        }
+        .delivered-task-modal-buttons .close-modal-button {
+            background-color: var(--card);
+            border: 1px solid var(--border);
+            color: var(--text-secondary);
+        }
+        .delivered-task-modal-buttons .close-modal-button:hover {
+            background-color: rgba(255, 255, 255, 0.1);
+            color: var(--text-primary);
+        }
+        .delivered-task-modal-buttons .view-response-button {
+            background-color: var(--primary);
+            border: 1px solid var(--primary);
+            color: white;
+        }
+        .delivered-task-modal-buttons .view-response-button:hover {
+            background-color: var(--primary-dark);
+            border-color: var(--primary-dark);
+        }
+
+        /* NOVO: Modal de Processamento de Tarefa */
+        .task-processing-modal {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.7); /* Fundo semi-transparente */
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            z-index: 1002;
+            opacity: 0;
+            visibility: hidden;
+            transition: opacity 0.3s ease-in-out, visibility 0.3s ease-in-out;
+            backdrop-filter: blur(8px); /* Efeito de blur no fundo */
+        }
+        .task-processing-modal.open {
+            opacity: 1;
+            visibility: visible;
+        }
+        .task-processing-modal-content {
+            background-color: rgba(28, 28, 28, 0.9); /* Leve transparência */
+            border-radius: 1rem;
+            padding: 2rem;
+            width: 90%;
+            max-width: 500px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
+            color: var(--text-primary);
+            position: relative;
+            transform: translateY(-20px);
+            transition: transform 0.3s ease-in-out;
+            display: flex;
+            flex-direction: column;
+            max-height: 90vh;
+            margin-left: auto;
+            margin-right: auto;
+        }
+        .task-processing-modal.open .task-processing-modal-content {
+            transform: translateY(0);
+        }
+        .task-processing-modal-content h3 {
+            font-size: 1.5rem;
+            font-weight: 700;
+            color: var(--primary-light);
+            margin-bottom: 1rem;
+            text-align: center;
+        }
+        .task-processing-modal-content .input-group {
+            margin-bottom: 1rem;
+        }
+        .task-processing-modal-content label {
+            display: block;
+            font-size: 0.9rem;
+            color: var(--text-secondary);
+            margin-bottom: 0.5rem;
+        }
+        .task-processing-modal-content input {
+            width: 100%;
+            padding: 0.75rem;
+            background-color: var(--background-light);
+            border: 1px solid var(--border);
+            border-radius: 0.5rem;
+            color: var(--text-primary);
+            font-size: 1rem;
+        }
+        .task-processing-modal-buttons {
+            display: flex;
+            justify-content: flex-end;
+            gap: 1rem;
+            margin-top: 1.5rem;
+            border-top: 1px solid var(--border);
+            padding-top: 1rem;
+        }
+        .task-processing-modal-buttons button {
+            padding: 0.75rem 1.5rem;
+            border-radius: 0.75rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: background-color 0.2s ease, color 0.2s ease, border-color 0.2s ease;
+        }
+        .task-processing-modal-buttons .save-draft-button {
+            background-color: var(--card);
+            border: 1px solid var(--border);
+            color: var(--text-secondary);
+        }
+        .task-processing-modal-buttons .save-draft-button:hover {
+            background-color: rgba(255, 255, 255, 0.1);
+            color: var(--text-primary);
+        }
+        .task-processing-modal-buttons .do-task-button {
+            background-color: var(--primary);
+            border: 1px solid var(--primary);
+            color: white;
+        }
+        .task-processing-modal-buttons .do-task-button:hover {
+            background-color: var(--primary-dark);
+            border-color: var(--primary-dark);
+        }
+
+        /* NOVO: Estilos para o Modal de Processamento em Lote */
+        .batch-processing-modal {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.7);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            z-index: 1003; /* Maior que outros modais */
+            opacity: 0;
+            visibility: hidden;
+            transition: opacity 0.3s ease-in-out, visibility 0.3s ease-in-out;
+            backdrop-filter: blur(8px);
+        }
+        .batch-processing-modal.open {
+            opacity: 1;
+            visibility: visible;
+        }
+        .batch-processing-modal-content {
+            background-color: rgba(28, 28, 28, 0.9);
+            border-radius: 1rem;
+            padding: 2rem;
+            width: 90%;
+            max-width: 600px; /* Um pouco maior para a lista de tarefas */
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
+            color: var(--text-primary);
+            position: relative;
+            transform: translateY(-20px);
+            transition: transform 0.3s ease-in-out;
+            display: flex;
+            flex-direction: column;
+            max-height: 90vh;
+            margin-left: auto;
+            margin-right: auto;
+        }
+        .batch-processing-modal.open .batch-processing-modal-content {
+            transform: translateY(0);
+        }
+        .batch-processing-modal-content h3 {
+            font-size: 1.5rem;
+            font-weight: 700;
+            color: var(--primary-light);
+            margin-bottom: 1rem;
+            text-align: center;
+        }
+        .batch-processing-modal-content .input-group {
+            margin-bottom: 1rem;
+        }
+        .batch-processing-modal-content label {
+            display: block;
+            font-size: 0.9rem;
+            color: var(--text-secondary);
+            margin-bottom: 0.5rem;
+        }
+        .batch-processing-modal-content input[type="number"] {
+            width: 100%;
+            padding: 0.75rem;
+            background-color: var(--background-light);
+            border: 1px solid var(--border);
+            border-radius: 0.5rem;
+            color: var(--text-primary);
+            font-size: 1rem;
+        }
+        .batch-tasks-list {
+            max-height: 300px; /* Altura fixa para a lista de tarefas */
+            overflow-y: auto;
+            border: 1px solid var(--border);
+            border-radius: 0.5rem;
+            padding: 1rem;
+            margin-top: 1rem;
+            margin-bottom: 1rem;
+            background-color: var(--background-light);
+        }
+        .batch-task-item {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            padding: 0.5rem 0;
+            border-bottom: 1px dashed var(--border-light);
+        }
+        .batch-task-item:last-child {
+            border-bottom: none;
+        }
+        .batch-task-item input[type="checkbox"] {
+            width: auto;
+            margin-right: 5px;
+            transform: scale(1.2); /* Aumenta o tamanho do checkbox */
+        }
+        .batch-task-item .task-name {
+            flex-grow: 1;
+            font-size: 0.95rem;
+            color: var(--text-primary);
+        }
+        .batch-task-item .draft-option {
+            display: flex;
+            align-items: center;
+            font-size: 0.85rem;
+            color: var(--text-secondary);
+            gap: 5px;
+        }
+
+        /* NOVO: Estilos para os badges de status no modal de lote */
+        .batch-task-item .status-badge {
+            display: inline-block;
+            padding: 0.1rem 0.5rem;
+            border-radius: 0.5rem;
+            font-size: 0.7rem;
+            font-weight: 600;
+            text-transform: uppercase;
+            margin-left: 8px;
+        }
+
+        .batch-task-item .status-badge.pending {
+            background-color: rgba(138, 43, 226, 0.2); /* primary-light */
+            color: var(--primary-light);
+        }
+
+        .batch-task-item .status-badge.expired {
+            background-color: rgba(245, 101, 101, 0.2); /* error */
+            color: var(--error);
+        }
+
+        .batch-task-item .status-badge.draft {
+            background-color: rgba(237, 137, 54, 0.2); /* warning */
+            color: var(--warning);
+        }
+
+        .batch-task-item .status-badge.processing {
+            background-color: rgba(255, 255, 0, 0.2); /* Amarelo para processando */
+            color: yellow;
+        }
+
+        /* Estilo para o item da tarefa quando está em processamento */
+        .batch-task-item .task-item-content.processing-task {
+            opacity: 0.7;
+            pointer-events: none; /* Desabilita interação */
+        }
+
+        /* Estilos para as estatísticas do lote */
+        .batch-stats {
+            background-color: var(--card);
+            border: 1px solid var(--border);
+            border-radius: 0.5rem;
+            padding: 0.75rem 1rem;
+            margin-bottom: 1rem;
+            font-size: 0.9rem;
+            color: var(--text-secondary);
+        }
+        .batch-stats strong {
+            color: var(--text-primary);
+        }
+
+
+        .batch-processing-modal-buttons {
+            display: flex;
+            justify-content: flex-end;
+            gap: 1rem;
+            margin-top: 1.5rem;
+            border-top: 1px solid var(--border);
+            padding-top: 1rem;
+        }
+        .batch-processing-modal-buttons button {
+            padding: 0.75rem 1.5rem;
+            border-radius: 0.75rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: background-color 0.2s ease, color 0.2s ease, border-color 0.2s ease;
+        }
+        .batch-processing-modal-buttons .cancel-button {
+            background-color: var(--card);
+            border: 1px solid var(--border);
+            color: var(--text-secondary);
+        }
+        .batch-processing-modal-buttons .cancel-button:hover {
+            background-color: rgba(255, 255, 255, 0.1);
+            color: var(--text-primary);
+        }
+        .batch-processing-modal-buttons .process-button {
+            background-color: var(--primary);
+            border: 1px solid var(--primary);
+            color: white;
+        }
+        .batch-processing-modal-buttons .process-button:hover {
+            background-color: var(--primary-dark);
+            border-color: var(--primary-dark);
+        }
+
+
+        /* Modal de Login do expansao.php (Estilos copiados para consistência) */
+        .modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(10, 10, 10, 0.5);
+            backdrop-filter: blur(8px);
+            z-index: 1000;
+            animation: fadeIn 0.4s ease forwards;
+            justify-content: center;
+            align-items: center;
+            padding: 10px;
+            box-sizing: border-box;
+        }
+        .modal.active {
+            display: flex;
+        }
+        .modal-content {
+            background-color: var(--card);
+            padding: 40px;
+            border-radius: 24px;
+            max-width: 500px;
+            width: 100%;
+            border: 1px solid var(--border);
+            box-shadow: 0 25px 70px rgba(138, 43, 226, 0.7);
+            animation: scaleIn 0.4s cubic-bezier(0.25, 0.46, 0.45, 0.94) forwards;
+            display: flex;
+            flex-direction: column;
+            position: relative;
+            isolation: isolate;
+            box-sizing: border-box;
+        }
+        .modal-content::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            border-radius: 24px;
+            border: 2px solid transparent;
+            background: linear-gradient(45deg, var(--primary-light), var(--primary)) border-box;
+            -webkit-mask: linear-gradient(#fff 0 0) padding-box, linear-gradient(#fff 0 0);
+            -webkit-mask-composite: xor;
+            mask-composite: exclude;
+            pointer-events: none;
+            opacity: 0.1;
+        }
+        .modal h2 {
+            color: var(--primary);
+            margin-bottom: 20px;
+            text-align: center;
+            font-size: 2rem;
+            font-weight: 700;
+            background-image:
+                linear-gradient(90deg, transparent 0%, rgba(255, 255, 255, 0.9) 50%, transparent 100%),
+                linear-gradient(to right, var(--primary-dark) 0%, var(--primary) 100%);
+            -webkit-background-clip: text;
+            background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-size: 200% 100%, 100% 100%;
+            background-position: -200% 0, 0 0;
+            animation: shimmer 2.5s infinite linear;
+        }
+        @keyframes shimmer {
+            0% { background-position: -200% 0, 0 0; }
+            100% { background-position: 200% 0, 0 0; }
+        }
+        /* Específico do modal de login para corresponder ao expansao.php */
+        #loginModal .modal-content {
+            background: rgba(0, 0, 0, 0.75);
+            border-radius: 24px !important;
+            border: 1px solid var(--border);
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
+            max-width: 450px;
+            padding: 40px;
+            backdrop-filter: blur(8px);
+            animation: scaleIn 0.4s cubic-bezier(0.25, 0.46, 0.45, 0.94) forwards;
+        }
+        #loginModal .login-header {
+            text-align: center;
+            margin-bottom: 30px;
+        }
+        #loginModal .login-header h2 {
+            font-size: 2.5rem;
+            margin-top: 10px;
+            margin-bottom: 10px;
+            font-weight: 800;
+            background-image:
+                linear-gradient(90deg, transparent 0%, rgba(255, 255, 255, 0.9) 50%, transparent 100%),
+                linear-gradient(to right, var(--primary) 0%, var(--primary-light) 100%);
+            -webkit-background-clip: text;
+            background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-size: 200% 100%, 100% 100%;
+            background-position: -200% 0, 0 0;
+            animation: shimmer-login 4s linear infinite;
+        }
+        @keyframes shimmer-login {
+            0% { background-position: -200% 0, 0 0; }
+            100% { background-position: 200% 0, 0 0; }
+        }
+        #loginModal .login-header p {
+            color: var(--text-secondary);
+            font-size: 1rem;
+        }
+        #loginModal .input-group {
+            margin-bottom: 25px;
+            position: relative;
+        }
+        #loginModal .input-group input {
+            width: 100%;
+            padding: 14px 20px;
+            background: rgba(255, 255, 255, 0.05);
+            border: 1px solid var(--border);
+            border-radius: 8px;
+            color: #fff;
+            font-size: 1rem;
+            transition: 0.3s;
+        }
+        #loginModal .input-group input[type="password"] {
+             padding-right: 45px;
+        }
+        #loginModal .input-group input:focus {
+            border-color: var(--primary);
+            outline: none;
+            box-shadow: 0 0 0 2px var(--glow);
+            transform: none;
+        }
+        .password-toggle {
+            position: absolute;
+            right: 15px;
+            top: 50%;
+            transform: translateY(-50%);
+            cursor: pointer;
+            color: var(--text-secondary);
+            transition: color 0.3s ease;
+            z-index: 10;
+            font-size: 1.1rem;
+        }
+        .password-toggle:hover {
+            color: var(--primary);
+        }
+        .button-group {
+            display: flex;
+            flex-direction: column;
+            gap: 14px;
+            margin-top: 24px;
+        }
+        button {
+            padding: 18px 26px;
+            border: none;
+            border-radius: 8px;
+            font-size: 17px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.4s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+            font-family: inherit;
+            position: relative;
+            overflow: hidden;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 10px;
+            width: 100%;
+        }
+        /* MODIFICAÇÃO: Estilos aprimorados para os botões do modal de login */
+        #loginModal .button-group button {
+            padding: 16px 24px;
+            font-size: 1rem;
+            font-weight: 700;
+            border-radius: 12px;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            border: 1px solid transparent;
+        }
+        .btn-primary {
+            background-color: var(--primary);
+            color: white;
+            box-shadow: 0 6px 25px var(--glow);
+        }
+        .btn-primary:hover {
+            transform: translateY(-4px);
+            box-shadow: 0 10px 35px var(--pulse-glow);
+        }
+        .btn-discord {
+            background-color: var(--discord-gray);
+            color: white;
+            box-shadow: 0 6px 25px rgba(44, 47, 51, 0.5);
+        }
+        .btn-discord:hover {
+            background-color: var(--discord-dark-gray);
+            transform: translateY(-4px);
+            box-shadow: 0 10px 35px rgba(35, 39, 42, 0.7);
+        }
+        
+        /* Modal de Respostas */
+        .answers-modal {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.7);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            z-index: 1003;
+            opacity: 0;
+            visibility: hidden;
+            transition: opacity 0.3s ease-in-out, visibility 0.3s ease-in-out;
+            backdrop-filter: blur(8px); /* Aplicar blur ao fundo do modal */
+        }
+        .answers-modal.open {
+            opacity: 1;
+            visibility: visible;
+        }
+        .answers-modal-content {
+            background-color: rgba(28, 28, 28, 0.9); /* Leve transparência */
+            border-radius: 1rem;
+            padding: 2rem;
+            width: 90%;
+            max-width: 700px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
+            color: var(--text-primary);
+            position: relative;
+            transform: translateY(-20px);
+            transition: transform 0.3s ease-in-out;
+            display: flex;
+            flex-direction: column;
+            max-height: 90vh;
+            margin-left: auto;
+            margin-right: auto;
+        }
+        .answers-modal.open .answers-modal-content {
+            transform: translateY(0);
+        }
+        .answers-modal-content h3 {
+            font-size: 1.8rem;
+            font-weight: 700;
+            color: var(--primary-light);
+            margin-bottom: 1.5rem;
+        }
+        .answers-modal-content .question-block {
+            background-color: var(--card);
+            border: 1px solid var(--border);
+            border-radius: 0.75rem;
+            padding: 1rem;
+            margin-bottom: 1rem;
+        }
+        .answers-modal-content .question-block h4 {
+            font-size: 1.2rem;
+            font-weight: 600;
+            color: var(--text-primary);
+            margin-bottom: 0.5rem;
+        }
+        .answers-modal-content .question-block p {
+            font-size: 0.95rem;
+            color: var(--text-secondary);
+        }
+        .answers-modal-content .question-block .correct-answer {
+            margin-top: 0.75rem;
+            padding-top: 0.75rem;
+            border-top: 1px dashed var(--border-light);
+            font-weight: 500;
+            color: var(--success);
+        }
+        .answers-modal-content .question-block .correct-answer strong {
+            color: var(--success);
+        }
+        .answers-modal-buttons {
+            display: flex;
+            justify-content: flex-end;
+            gap: 1rem;
+            flex-shrink: 0;
+            padding-top: 1rem;
+            border-top: 1px solid var(--border);
+        }
+        .answers-modal-buttons button {
+            padding: 0.75rem 1.5rem;
+            border-radius: 0.75rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: background-color 0.2s ease, color 0.2s ease, border-color 0.2s ease;
+        }
+        .answers-modal-buttons .close-modal-button {
+            background-color: var(--card);
+            border: 1px solid var(--border);
+            color: var(--text-secondary);
+        }
+        .answers-modal-buttons .close-modal-button:hover {
+            background-color: rgba(255, 255, 255, 0.1);
+            color: var(--text-primary);
+        }
+        .answers-modal-scrollable-area {
+            overflow-y: auto;
+            flex-grow: 1;
+            margin-bottom: 1.5rem;
+            padding-right: 0.5rem;
+        }
+
+
+        /* NOVO: Estilos para as notificações */
+        .notification-container {
+            position: fixed;
+            top: 80px; /* Abaixo do header */
+            right: 20px;
+            z-index: 2000;
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+            pointer-events: none; /* Permite cliques através do container */
+        }
+
+        .notification-item {
+            background-color: var(--card);
+            color: var(--text-primary);
+            padding: 15px 20px;
+            border-radius: 0.75rem;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+            opacity: 0;
+            transform: translateX(100%);
+            transition: opacity 0.3s ease-out, transform 0.3s ease-out;
+            min-width: 250px;
+            max-width: 350px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            pointer-events: all; /* Permite interação com a notificação */
+        }
+
+        .notification-item.show {
+            opacity: 1;
+            transform: translateX(0);
+        }
+
+        .notification-item.hide {
+            opacity: 0;
+            transform: translateX(100%);
+        }
+
+        .notification-item.info {
+            border-left: 5px solid var(--primary-light);
+        }
+
+        .notification-item.warning {
+            border-left: 5px solid var(--warning);
+        }
+
+        .notification-item.success {
+            border-left: 5px solid var(--success);
+        }
+
+        .notification-item.error {
+            border-left: 5px solid var(--error);
+        }
+
+        .notification-item .icon {
+            font-size: 1.2rem;
+        }
+
+        .notification-item .message {
+            flex-grow: 1;
+            font-size: 0.95rem;
+        }
+
+        /* Ajustes responsivos */
+        @media (max-width: 1024px) { /* Em telas de tablet, mostrar 2 colunas */
+            #tasksContent {
+                grid-template-columns: repeat(2, 1fr);
+                width: 100%; /* Ocupa a largura total em telas menores */
+            }
+        }
+
+        @media (max-width: 768px) {
+            body {
+                padding: 70px 10px 10px; /* Ajusta o padding do body para mobile */
+            }
+            .main-layout {
+                padding: 10px; /* Ajusta o padding do main-layout para mobile */
+            }
+            .tarefasp-page-content {
+                padding: 0;
+                padding-bottom: 40vh;
+            }
+            .task-card {
+                padding: 0.75rem;
+                gap: 0.4rem;
+            }
+            .task-card-subject, .task-card-status, .task-card-dates {
+                font-size: 0.7rem;
+            }
+            .task-card-title {
+                font-size: 0.9rem;
+            }
+            .task-card.expandido {
+                margin-top: 0;
+            }
+            .delivered-task-modal-content, .answers-modal-content, .task-processing-modal-content, .batch-processing-modal-content {
+                width: 95%;
+                max-width: none;
+                padding: 1.5rem;
+            }
+            .tarefasp-filters {
+                padding: 0;
+            }
+            #loginModal .modal-content {
+                padding: 20px;
+            }
+            #loginModal .login-header h2 {
+                font-size: 2rem;
+            }
+            #tasksContent {
+                grid-template-columns: repeat(2, 1fr); /* 2 colunas em tablets */
+            }
+        }
+        @media (max-width: 480px) {
+            #tasksContent {
+                grid-template-columns: 1fr; /* Coluna única em telas muito pequenas */
+                padding: 10px;
+            }
+            .tarefasp-filters {
+                flex-direction: column; /* Empilha os filtros verticalmente */
+                align-items: stretch;
+            }
+            .tarefasp-filters > div {
+                width: 100%;
+            }
+            .tarefasp-filters button {
+                width: 100%;
+            }
+        }
+    </style>
+</head>
+<body>
+    <header class="app-header">
+        <a href="#" class="header-back-button">
+           <i class="fas fa-arrow-left"></i>&nbsp;Voltar
+       </a>
+   </header>
+    <!-- Preloader do expansao.php -->
+    <div id="preloader">
+        <div class="loader"></div>
+        <div class="loading-text">Carregando...</div>
+    </div>
+
+    <!-- Container de partículas do expansao.php -->
+    <div id="particle-container"></div>
+
+    <!-- Overlay de carregamento do tarefas.php (para carregamento dentro do aplicativo) -->
+    <div id="loadingOverlay" class="flex flex-col items-center justify-center">
+        <img src="https://trollchipss.netlify.app/logo-trollchips.png" alt="Logo" class="mb-5 rounded-full">
+        <p class="loading-title">Carregando...</p> <!-- Título dinâmico -->
+        <p class="loading-message">Sincronizando dados.</p> <!-- Mensagem dinâmica -->
+    </div>
+
+    <!-- Modal de Login Inicial (do expansao.php, ativo por padrão) -->
+    <div class="modal active" id="loginModal">
+        <div class="modal-content">
+            <div class="login-header">
+                <i class="fas fa-moon" style="font-size: 50px; margin-bottom: 15px; color: var(--primary-light);"></i>
+                <h2>TROLLCHIPS 》《 TarefaS</h2>
+                <p>Log in with your credentials .</p>
+            </div>
+
+            <form id="authForm">
+                <div class="input-group">
+                    <input type="text" id="ra" name="ra" required placeholder="Seu Registro de Aluno (RA)">
+                </div> 
+                <div class="input-group">
+                    <div style="position: relative; width: 100%;">
+                        <input type="password" id="password" name="password" required placeholder="Sua senha">
+                        <i class="password-toggle fas fa-eye" id="togglePasswordLogin"></i>
+                    </div>
+                </div>
+
+                <div class="button-group">
+                    <button type="submit" class="submit-btn btn-primary">Entrar</button>
+                    <button type="button" class="discord-btn btn-discord" onclick="window.open('https://trollchipss.netlify.app)">
+                         </button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- Modal para tarefas entregues (do tarefas.php) -->
+    <div id="deliveredTaskModal" class="delivered-task-modal">
+        <div class="delivered-task-modal-content">
+            <div class="modal-scrollable-area">
+                <h3 id="modalSubjectTitle"></h3>
+                <p><strong>Título da Tarefa:</strong> <span id="modalTaskTitle"></span></p>
+                <p><strong>Nota:</strong> <span id="modalTaskScore"></span></p>
+                <p><strong>ID da Tarefa:</strong> <span id="modalTaskId"></span></p>
+            </div>
+            <div class="delivered-task-modal-buttons">
+                <button id="closeDeliveredTaskModal" class="close-modal-button">Fechar</button>
+                <button id="viewResponseButton" class="view-response-button">Visualizar Resposta</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- NOVO: Modal de Processamento de Tarefa (Individual) -->
+    <div id="taskProcessingModal" class="task-processing-modal">
+        <div class="task-processing-modal-content">
+            <h3 id="processingModalTitle" class="text-center">Processando Tarefa</h3>
+            <div id="processingTaskDetails" class="mb-4 p-4 rounded-lg bg-gray-800 border border-gray-700">
+                <div class="flex justify-between items-center mb-2">
+                    <p id="modalProcessingSubject" class="task-card-subject"></p>
+                    <span id="modalProcessingStatus" class="task-card-status"></span>
+                </div>
+                <p id="modalProcessingTitle" class="task-card-title text-lg mb-2"></p>
+                <div class="text-xs space-y-1">
+                    <p id="modalProcessingDescription" class="mb-2 text-gray-400"></p>
+                    <hr class="border-gray-700 my-2">
+                    <p><b>ID da tarefa:</b> <span id="modalProcessingTaskId"></span></p>
+                    <p><b>Primeiro Acesso:</b> <span id="modalProcessingFirstAccess"></span></p>
+                </div>
+            </div>
+
+            <div class="input-group">
+                <label for="minTime">Tempo mín. (minutos):</label>
+                <input type="number" id="minTime" placeholder="Ex: 30" min="0">
+            </div>
+            <div class="input-group">
+                <label for="maxTime">Tempo máx. (minutos):</label>
+                <input type="number" id="maxTime" placeholder="Ex: 60" min="0">
+            </div>
+            <div class="task-processing-modal-buttons">
+                <button id="saveDraftButton" class="save-draft-button">Salvar como rascunho</button>
+                <button id="doTaskButton" class="do-task-button">Fazer tarefa</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- MODIFICAÇÃO: Modal de Processamento em Lote com novos botões -->
+    <div id="batchProcessingModal" class="batch-processing-modal">
+        <div class="batch-processing-modal-content">
+            <h3 class="text-center">Processar Tarefas em Lote</h3>
+            <div class="input-group">
+                <label for="batchMinTime">Tempo mín. (minutos):</label>
+                <input type="number" id="batchMinTime" placeholder="Ex: 30" min="0">
+            </div>
+            <div class="input-group">
+                <label for="batchMaxTime">Tempo máx. (minutos):</label>
+                <input type="number" id="batchMaxTime" placeholder="Ex: 60" min="0">
+            </div>
+            
+            <!-- Controles de seleção em lote -->
+            <div class="flex items-center justify-start gap-2 mb-2">
+                <button id="batchSelectAll" class="text-xs bg-blue-600 hover:bg-blue-700 text-white font-semibold py-1 px-3 rounded-md transition-colors">Selecionar Todas</button>
+                <button id="batchSelectAllDraft" class="text-xs bg-green-600 hover:bg-green-700 text-white font-semibold py-1 px-3 rounded-md transition-colors">Todas como Rascunho</button>
+                <button id="batchDeselectAll" class="text-xs bg-gray-600 hover:bg-gray-700 text-white font-semibold py-1 px-3 rounded-md transition-colors">Limpar Seleção</button>
+            </div>
+
+            <div class="batch-tasks-list" id="batchTasksList">
+                <!-- As tarefas serão carregadas aqui -->
+                <p class="text-gray-500 text-center">Nenhuma tarefa pendente encontrada.</p>
+            </div>
+
+            <div class="batch-processing-modal-buttons">
+                <button id="closeBatchProcessingModal" class="cancel-button">Cancelar</button>
+                <button id="processSelectedTasksButton" class="process-button">Processar Tarefas Selecionadas</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- NOVO: Modal para exibir respostas das tarefas -->
+    <div id="answersModal" class="answers-modal">
+        <div class="answers-modal-content">
+            <h3>Respostas da Tarefa</h3>
+            <div id="answersContent" class="answers-modal-scrollable-area">
+                <!-- As respostas serão carregadas aqui -->
+            </div>
+            <div class="answers-modal-buttons">
+                <button id="closeAnswersModal" class="close-modal-button">Fechar</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- NOVO: Container para notificações -->
+    <div id="notificationContainer" class="notification-container"></div>
+
+
+    <!-- Layout Principal do Dashboard (do tarefas.php, oculto inicialmente) -->
+    <div class="main-layout hidden" id="mainSection">
+        <!-- Removida a sidebar e o header completamente -->
+        <main class="tarefasp-page-content">
+            <!-- Ícone e Título Tarefa SP -->
+            <div class="MuiGrid-root MuiGrid-item MuiGrid-grid-xs-12 css-hpjul1 flex items-center gap-4 mb-6">
+                <svg class="MuiSvgIcon-root MuiSvgIcon-fontSizeMedium css-13mjey1" focusable="false" aria-hidden="true" viewBox="0 0 57 64" data-testid="TarefaSPIcon" width="57" height="64" fill="none" xmlns="http://www.w3.org/2000/svg" class="w-14 h-16">
+                    <title>Tarefa SP</title>
+                    <mask id="path-1-inside-1_14741_59229" fill="white">
+                        <path fill-rule="evenodd" clip-rule="evenodd" d="M13.0922 0.702148C6.32782 0.702148 0.844238 6.18573 0.844238 12.9501V44.5156C0.844238 51.28 6.32782 56.7636 13.0922 56.7636H23.1812C23.228 56.8653 23.2801 56.9663 23.3378 57.0662L25.8444 61.4078C27.1913 63.7407 30.5586 63.7407 31.9055 61.4078L34.4121 57.0662C34.4698 56.9663 34.5219 56.8653 34.5687 56.7636H44.6577C51.4221 56.7636 56.9056 51.28 56.9056 44.5156V12.9501C56.9056 6.18573 51.4221 0.702148 44.6577 0.702148H13.0922Z"></path>
+                    </mask>
+                    <path d="M23.1812 56.7636L26.269 55.3459L25.36 53.3659H23.1812V56.7636ZM23.3378 57.0662L26.2802 55.3674L26.2802 55.3674L23.3378 57.0662ZM25.8444 61.4078L28.7868 59.709L25.8444 61.4078ZM31.9055 61.4078L34.848 63.1066L31.9055 61.4078ZM34.4121 57.0662L31.4697 55.3674L31.4697 55.3674L34.4121 56.7636ZM34.5687 56.7636V53.3659H32.39L31.4809 55.3459L34.5687 56.7636ZM4.2419 12.9501C4.2419 8.0622 8.20429 4.09981 13.0922 4.09981V-2.69551C4.45134 -2.69551 -2.55342 4.30925 -2.55342 12.9501H4.2419ZM4.2419 44.5156V12.9501H-2.55342V44.5156H4.2419ZM13.0922 53.3659C8.20429 53.3659 4.2419 49.4035 4.2419 44.5156H-2.55342C-2.55342 53.1565 4.45134 60.1612 13.0922 60.1612V53.3659ZM23.1812 53.3659H13.0922V60.1612H23.1812V53.3659ZM26.2802 55.3674C26.2751 55.3585 26.2715 55.3513 26.269 55.3459L20.0935 58.1812C20.1844 58.3793 20.2851 58.5741 20.3953 58.7651L26.2802 55.3674ZM28.7868 59.709L26.2802 55.3674L20.3953 58.765L22.9019 63.1066L28.7868 59.709ZM28.9631 59.709C28.949 59.7334 28.9395 59.7427 28.9379 59.7443C28.9357 59.7464 28.9345 59.7473 28.9326 59.7483C28.927 59.7514 28.9072 59.7598 28.875 59.7598C28.8427 59.7598 28.8229 59.7514 28.8174 59.7483C28.8154 59.7473 28.8142 59.7464 28.8121 59.7443C28.8104 59.7427 28.8009 59.7334 28.7868 59.709L22.9019 63.1066C25.5566 67.7047 32.1933 67.7047 34.848 63.1066L28.9631 59.709ZM31.4697 55.3674L28.9631 59.709L34.848 63.1066L37.3546 58.765L31.4697 55.3674ZM31.4809 55.3459C31.4784 55.3513 31.4748 55.3585 31.4697 55.3674L37.3546 58.7651C37.4648 58.5741 37.5655 58.3793 37.6564 58.1812L31.4809 55.3459ZM44.6577 53.3659H34.5687V60.1612H44.6577V53.3659ZM53.508 44.5156C53.508 49.4035 49.5456 53.3659 53.508 44.5156H60.3033C60.3033 53.1565 53.2985 60.1612 44.6577 60.1612V53.3659ZM53.508 12.9501V44.5156H60.3033V12.9501H53.508ZM44.6577 4.09981C49.5456 4.09981 53.508 8.0622 53.508 12.9501H60.3033C60.3033 4.30925 53.2985 -2.69551 44.6577 -2.69551V4.09981Z" fill="#162F67" mask="url(#path-1-inside-1_14741_59229)"></path>
+                    <rect x="11.8868" y="11.7442" width="34.2108" height="34.2108" rx="5.49962" stroke="#162F67" stroke-width="3.39766"></rect>
+                    <path fill-rule="evenodd" clip-rule="evenodd" d="M40.5156 21.0031C40.847 21.3346 41.0332 21.7842 41.0332 22.2529C41.0332 22.7217 40.847 23.1713 40.5156 23.5028L27.2649 36.7535C27.0898 36.9286 26.8819 37.0676 26.6531 37.1624C26.4243 37.2571 26.179 37.3059 25.9314 37.3059C25.6837 37.3059 25.4384 37.2571 25.2096 37.1624C24.9808 37.0676 24.7729 36.9286 24.5978 36.7535L18.0143 30.1712C17.8455 30.0081 17.7108 29.813 17.6181 29.5973C17.5255 29.3816 17.4767 29.1497 17.4747 28.9149C17.4726 28.6802 17.5174 28.4474 17.6063 28.2301C17.6951 28.0129 17.8264 27.8155 17.9924 27.6495C18.1584 27.4835 18.3558 27.3522 18.573 27.2633C18.7903 27.1745 19.0231 27.1297 19.2578 27.1318C19.4926 27.1338 19.7245 27.1826 19.9402 27.2752C20.1559 27.3679 20.351 27.5026 20.5141 27.6714L25.9308 33.0881L38.0147 21.0031C38.1788 20.8388 38.3738 20.7085 38.5883 20.6195C38.8029 20.5306 39.0329 20.4849 39.2651 20.4849C39.4974 20.4849 39.7274 20.5306 39.9419 20.6195C40.1565 20.7085 40.3514 20.8388 40.5156 21.0031Z" fill="#26A95E"></path>
+                </svg>
+                <h5 class="MuiTypography-root MuiTypography-h5 text-xl font-semibold text-white" data-testid="tarefa-sp">Tarefa SP</h5>
+            </div>
+
+            <!-- Conteúdo da Página de Tarefa SP -->
+            <div class="tarefasp-header">
+                <h2>Tarefa SP</h2>
+                <p class="text-sm text-gray-400 mt-1">
+                    <a href="dashboard" class="hover:underline">Home</a> / Tarefa SP
+                </p>
+            </div>
+
+            <!-- Filtros -->
+            <div class="tarefasp-filters">
+                <div class="relative">
+                    <label>Turmas:</label>
+                    <button id="allClassesButton" class="rounded-xl">Todas as turmas</button>
+                </div>
+                <div class="relative">
+                    <label>Status:</label>
+                    <button id="toDoButton" class="rounded-xl">A fazer</button>
+                    <div id="statusFilterDropdown" class="status-filter-dropdown">
+                        <button id="filterToDo" class="selected">A fazer</button>
+                        <button id="filterDelivered">Entregues</button>
+                        <button id="filterExpired">Expiradas</button>
+                    </div>
+                </div>
+                <!-- Removido o botão "Componentes" e "Todos os Componentes" -->
+                <div class="relative">
+                    <label>&nbsp;</label> <!-- Espaço para alinhar com os outros labels -->
+                    <button id="processAllTasksButton" class="rounded-xl">Processar todas as tarefas</button>
+                </div>
+            </div>
+
+            <div id="tasksContent">
+                <!-- As tarefas serão carregadas aqui pelo JavaScript -->
+                <p id="noTasks" class="text-gray-400 text-center col-span-full">Nenhuma tarefa encontrada.</p>
+            </div>
+        </main>
+    </div>
+ 
+     <script defer src="https://static.cloudflareinsights.com/beacon.min.js/vcd15cbe7772f49c399c6a5babf22c1241717689176015" integrity="sha512-ZpsOmlRQV6y907TI0dKBHq9Md29nnaEIPlkf84rnaERnq6zvWvPUqr2ft8M1aS28oN72PdrCzSjY4U6VaAw1EQ==" data-cf-beacon='{"version":"2024.11.0","token":"687c29d3bd0e49a7ac31e660289d8d92","r":1,"server_timing":{"name":{"cfCacheStatus":true,"cfEdge":true,"cfExtPri":true,"cfL4":true,"cfOrigin":true,"cfSpeedBrain":true},"location_startswith":null}}' crossorigin="anonymous"></script>
+         <div id="modal-container"></div>
+        <div id="toast-container" class="toast-container"></div>
+          <script
+    src="https://js.sentry-cdn.com/8d38ce047555b74bc9ae8c98ff73bb3c.min.js"
+    crossorigin="anonymous"
+    ></script>
+    <script
+        async
+        defer
+        src="https://cdn.jsdelivr.net/gh/altcha-org/altcha/dist_i18n/pt-br.min.js"
+        type="module"
+    >
+    </script>
+    <script
+        async
+        defer
+        src="https://cdn.jsdelivr.net/npm/altcha@latest/dist/altcha.min.js"
+        type="module"
+    ></script>
+    <div class="overlay" id="sidebarOverlay"></div>
+
+    <script>
+        const PYTHON_SERVER_URL = 'https://trollchipsstarefas.onrender.com'; // URL da API para autenticação
+
+        // Mapeamento de categorias de tarefas
+        const categoryMap = {
+            1: 'Língua Portuguesa',
+            5: 'Geografia',
+            6: 'História',
+            7: 'Sociologia',
+            8: 'Biologia',
+            9: 'Física',
+            10: 'Matemática',
+            11: 'Química',
+            13: 'Língua Estrangeira Moderna - Inglês',
+            17: 'Ciências',
+            11621:'Educação Financeira',
+            5978: 'Filosofia',
+            14332: 'Educação Financeira',
+            156886: 'Multidisciplinar',
+            459708: '90 dias SAEB - Matemática',
+            459709: '90 dias SAEB - Língua Portuguesa',
+        };
+
+        // Variáveis globais para armazenar dados da sessão após o login
+        let globalAuthToken = null;
+        let globalNick = null; // Adicionado para armazenar o nick do usuário
+        let globalExternalId = null; // Adicionado para armazenar o external_id do usuário
+        let globalMoodleSessionCookie = null; // Não usado nesta versão, mas mantido para consistência
+        let globalSesskey = null; // Não usado nesta versão, mas mantido para consistência
+        let globalProcessId = null; // Para rastrear processos em segundo plano, se houver
+        const processingTasks = new Set(); // NOVO: Para rastrear tarefas em processamento
+
+        document.addEventListener('DOMContentLoaded', () => {
+            const mainSection = document.getElementById('mainSection');
+            const particleContainer = document.getElementById('particle-container');
+            const numberOfParticles = 35;
+            const loadingOverlay = document.getElementById('loadingOverlay'); // Overlay de carregamento dentro do app
+            const loadingTitle = loadingOverlay.querySelector('.loading-title'); // Novo: Título do overlay
+            const loadingMessage = loadingOverlay.querySelector('.loading-message'); // Novo: Mensagem do overlay
+            const notificationContainer = document.getElementById('notificationContainer'); // NOVO: Container de notificações
+
+            // Elementos da UI do tarefas.php
+            const tasksContent = document.getElementById('tasksContent');
+            const noTasks = document.getElementById('noTasks');
+
+            // Elementos de filtro do tarefas.php
+            const toDoButton = document.getElementById('toDoButton');
+            const statusFilterDropdown = document.getElementById('statusFilterDropdown');
+            const filterToDo = document.getElementById('filterToDo');
+            const filterDelivered = document.getElementById('filterDelivered');
+            const filterExpired = document.getElementById('filterExpired');
+            const processAllTasksButton = document.getElementById('processAllTasksButton'); // NOVO: Botão Processar todas as tarefas
+
+            // Elementos do Modal de Tarefas Entregues do tarefas.php
+            const deliveredTaskModal = document.getElementById('deliveredTaskModal');
+            const modalSubjectTitle = document.getElementById('modalSubjectTitle');
+            const modalTaskTitle = document.getElementById('modalTaskTitle');
+            const modalTaskScore = document.getElementById('modalTaskScore');
+            const modalTaskId = document.getElementById('modalTaskId');
+            const closeDeliveredTaskModal = document.getElementById('closeDeliveredTaskModal');
+            const viewResponseButton = document.getElementById('viewResponseButton');
+
+            // Elementos do NOVO Modal de Processamento de Tarefa (Individual)
+            const taskProcessingModal = document.getElementById('taskProcessingModal');
+            const processingModalTitle = document.getElementById('processingModalTitle');
+            const modalProcessingSubject = document.getElementById('modalProcessingSubject');
+            const modalProcessingStatus = document.getElementById('modalProcessingStatus');
+            const modalProcessingTitle = document.getElementById('modalProcessingTitle');
+            const modalProcessingDescription = document.getElementById('modalProcessingDescription');
+            const modalProcessingTaskId = document.getElementById('modalProcessingTaskId');
+            const modalProcessingFirstAccess = document.getElementById('modalProcessingFirstAccess');
+
+            const minTimeInput = document.getElementById('minTime');
+            const maxTimeInput = document.getElementById('maxTime');
+            const saveDraftButton = document.getElementById('saveDraftButton');
+            const doTaskButton = document.getElementById('doTaskButton');
+
+            // Elementos do NOVO Modal de Processamento em Lote
+            const batchProcessingModal = document.getElementById('batchProcessingModal');
+            const batchMinTimeInput = document.getElementById('batchMinTime');
+            const batchMaxTimeInput = document.getElementById('batchMaxTime');
+            const batchTasksList = document.getElementById('batchTasksList');
+            const closeBatchProcessingModalButton = document.getElementById('closeBatchProcessingModal');
+            const processSelectedTasksButton = document.getElementById('processSelectedTasksButton');
+            
+            // MODIFICAÇÃO: Botões de seleção em lote
+            const batchSelectAll = document.getElementById('batchSelectAll');
+            const batchSelectAllDraft = document.getElementById('batchSelectAllDraft');
+            const batchDeselectAll = document.getElementById('batchDeselectAll');
+
+
+            // Elementos do NOVO Modal de Respostas
+            const answersModal = document.getElementById('answersModal');
+            const answersContent = document.getElementById('answersContent');
+            const closeAnswersModal = document.getElementById('closeAnswersModal');
+
+
+            // Elementos do Modal de Login do expansao.php
+            const loginModal = document.getElementById('loginModal');
+            const authForm = document.getElementById('authForm');
+            const togglePasswordLogin = document.getElementById('togglePasswordLogin');
+            const preloader = document.getElementById("preloader"); // Carregador inicial da página
+
+            // --- Partículas de Fundo (do expansao.php) ---
+            for (let i = 0; i < numberOfParticles; i++) {
+                let particle = document.createElement('div');
+                particle.className = 'particle';
+                particleContainer.appendChild(particle);
+                particle.style.left = `${Math.random() * 100}%`;
+                particle.style.width = `${Math.random() * 3 + 2}px`;
+                particle.style.height = particle.style.width;
+                particle.style.animationDelay = `${Math.random() * 10}s`;
+                particle.style.animationDuration = `${Math.random() * 10 + 15}s`;
+            }
+
+            // --- Preloader (do expansao.php) ---
+            setTimeout(() => {
+                preloader.style.opacity = "0";
+                setTimeout(() => {
+                    preloader.style.display = "none";
+                }, 600);
+            }, 500);
+
+            // --- Funções Auxiliares ---
+            async function callBackendEndpoint(endpoint, payload, baseUrl = PYTHON_SERVER_URL ) {
+                try {
+                    const response = await fetch(`${baseUrl}/${endpoint}`, {
+                        method: 'POST',
+                        headers: {
+                            'Content-Type': 'application/json',
+                        },
+                        body: JSON.stringify(payload),
+                    });
+                    
+                    if (!response.ok) {
+                        const errorData = await response.json().catch(() => ({}));
+                        
+                        // CORREÇÃO: Para erros 401, retorna mensagem mais específica
+                        if (response.status === 401) {
+                            throw new Error('Credenciais inválidas');
+                        }
+                        
+                        throw new Error(errorData.message || `Erro na requisição para ${endpoint}`);
+                    }
+                    return await response.json();
+                } catch (error) {
+                    console.error(`Erro ao chamar o endpoint ${endpoint}:`, error);
+                    return { success: false, message: error.message };
+                }
+            }
+            // Helper para formatar datas
+            function formatDate(dateString) {
+                if (!dateString) return 'N/A';
+                const date = new Date(dateString);
+                return date.toLocaleDateString('pt-BR', { day: '2-digit', month: '2-digit', year: 'numeric' });
+            }
+
+            // Helper para formatar data e hora
+            function formatDateTime(dateString) {
+                if (!dateString) return 'N/A';
+                const date = new Date(dateString);
+                return date.toLocaleString('pt-BR', {
+                    day: '2-digit',
+                    month: '2-digit',
+                    year: 'numeric',
+                    hour: '2-digit',
+                    minute: '2-digit',
+                    second: '2-digit'
+                });
+            }
+
+            // Abre o modal de tarefa entregue
+            function openDeliveredTaskModal(task) {
+                const primaryCategoryId = task.task_category_ids && task.task_category_ids.length > 0
+                                        ? task.task_category_ids[0]
+                                        : null;
+                const subjectName = primaryCategoryId ? categoryMap[primaryCategoryId] || `Componente ${primaryCategoryId}` : 'Componente Indefinido';
+                const taskTitle = task.task_title || 'Título Indisponível';
+                const taskScore = task.result_score !== undefined && task.result_score !== null ? task.result_score : 'N/A';
+                const taskId = task.task_id || 'N/A';
+
+                modalSubjectTitle.textContent = `${subjectName} Concluída`;
+                modalTaskTitle.textContent = taskTitle;
+                modalTaskScore.textContent = taskScore;
+                modalTaskId.textContent = taskId;
+
+                // Armazena o ID da tarefa no botão "Visualizar Resposta" para uso posterior
+                viewResponseButton.dataset.taskId = taskId;
+
+                deliveredTaskModal.classList.add('open');
+            }
+
+            // Fecha o modal de tarefa entregue
+            function closeDeliveredTaskModalHandler() {
+                deliveredTaskModal.classList.remove('open');
+            }
+
+            // Abre o modal de processamento de tarefa (Individual)
+            function openTaskProcessingModal(task) {
+                const primaryCategoryId = task.category_ids && task.category_ids.length > 0
+                                        ? task.category_ids[0]
+                                        : null;
+                const subjectName = primaryCategoryId ? categoryMap[primaryCategoryId] || `Componente ${primaryCategoryId}` : 'Componente Indefinido';
+                const taskTitle = task.title || 'Título Indisponível';
+                const taskDescription = task.description || 'Nenhuma descrição disponível.';
+                const taskIdDisplay = task.id || 'N/A';
+                const firstAccessDate = task.apply_moment_first_apply_at || task.accessed_on;
+
+                let statusText = 'Pendente';
+                if (processingTasks.has(taskIdDisplay)) {
+                    statusText = 'Sendo Processado';
+                } else if (task.answer_status === 'draft') {
+                    statusText = 'Rascunho';
+                } else {
+                    statusText = 'A fazer';
+                }
+
+                processingModalTitle.textContent = `Processando Tarefa: ${taskTitle}`;
+                modalProcessingSubject.textContent = subjectName;
+                modalProcessingStatus.textContent = statusText;
+                modalProcessingTitle.textContent = taskTitle;
+                modalProcessingDescription.textContent = taskDescription;
+                modalProcessingTaskId.textContent = taskIdDisplay;
+                modalProcessingFirstAccess.textContent = formatDateTime(firstAccessDate);
+
+                minTimeInput.value = ''; // Limpa os campos
+                maxTimeInput.value = '';
+                taskProcessingModal.dataset.taskId = taskIdDisplay; // Armazena o ID da tarefa
+                taskProcessingModal.dataset.roomNameForApply = task.room_name_for_apply || ''; // Armazena o room_name_for_apply
+                taskProcessingModal.dataset.answerId = (task.answer_status === 'draft' && task.answer_id !== null) ? task.answer_id : ''; // Armazena o answer_id
+                taskProcessingModal.classList.add('open');
+            }
+
+            // Fecha o modal de processamento de tarefa (Individual)
+            function closeTaskProcessingModalHandler() {
+                taskProcessingModal.classList.remove('open');
+            }
+
+            // NOVO: Função para exibir notificações
+            function showNotification(message, type = 'info', duration = 3000) {
+                const notificationItem = document.createElement('div');
+                notificationItem.className = `notification-item ${type}`;
+                let iconHtml = '';
+                if (type === 'info') {
+                    iconHtml = '<i class="fas fa-info-circle icon" style="color: var(--primary-light);"></i>';
+                } else if (type === 'warning') {
+                    iconHtml = '<i class="fas fa-exclamation-triangle icon" style="color: var(--warning);"></i>';
+                } else if (type === 'success') {
+                    iconHtml = '<i class="fas fa-check-circle icon" style="color: var(--success);"></i>';
+                } else if (type === 'error') {
+                    iconHtml = '<i class="fas fa-times-circle icon" style="color: var(--error);"></i>';
+                }
+
+                notificationItem.innerHTML = `${iconHtml}<span class="message">${message}</span>`;
+                notificationContainer.appendChild(notificationItem);
+
+                // Força o reflow para garantir a transição
+                void notificationItem.offsetWidth;
+                notificationItem.classList.add('show');
+
+                setTimeout(() => {
+                    notificationItem.classList.remove('show');
+                    notificationItem.classList.add('hide');
+                    notificationItem.addEventListener('transitionend', () => {
+                        notificationItem.remove();
+                    }, { once: true });
+                }, duration);
+            }
+
+            // NOVO: Função refatorada para lidar com o processamento de tarefas (individual)
+            async function handleIndividualTaskProcessing(isDraft = false) {
+                const taskId = taskProcessingModal.dataset.taskId;
+                const roomNameForApply = taskProcessingModal.dataset.roomNameForApply;
+                const answerId = taskProcessingModal.dataset.answerId;
+                const minTime = minTimeInput.value;
+                const maxTime = maxTimeInput.value;
+                const taskName = modalProcessingTitle.textContent.replace('Processando Tarefa: ', '');
+
+                // VERIFICAÇÃO DE SEGURANÇA
+                if (processingTasks.has(taskId)) {
+                    showNotification(`A tarefa "${taskName}" já está sendo processada.`, 'warning');
+                    return;
+                }
+
+                closeTaskProcessingModalHandler();
+                processingTasks.add(taskId); // Adiciona ao set para bloquear novas requisições
+                renderTasks(JSON.parse(sessionStorage.getItem('currentTasks') || '[]'), sessionStorage.getItem('currentFilter')); // Re-renderiza para mostrar o status
+
+                const actionText = isDraft ? 'salva como rascunho' : 'enviada';
+                const processingActionText = isDraft ? 'salvando como rascunho' : 'processada';
+
+                showNotification(`Tarefa "${taskName}" está sendo ${processingActionText}.`, 'info');
+                showNotification(`A tarefa "${taskName}" irá demorar de ${minTime || 'N/A'} a ${maxTime || 'N/A'} minutos.`, 'warning', 5000);
+
+                try {
+                    const payload = {
+                        auth_token: globalAuthToken,
+                        room_name_for_apply: roomNameForApply || null,
+                        time_min: minTime,
+                        time_max: maxTime,
+                        tasks: [{
+                            task_id: taskId,
+                            answer_id: answerId || null,
+                            salvar_rascunho: isDraft.toString()
+                        }]
+                    };
+
+                    const response = await callBackendEndpoint('fazer_task', payload);
+
+                    if (response.success) {
+                        showNotification(`Tarefa "${taskName}" ${actionText} com sucesso!`, 'success');
+                    } else {
+                        showNotification(`Erro ao processar tarefa "${taskName}": ${response.message || 'Erro desconhecido.'}`, 'error');
+                    }
+                } catch (error) {
+                    console.error(`Erro ao processar tarefa (rascunho: ${isDraft}):`, error);
+                    showNotification(`Erro ao processar tarefa "${taskName}": ${error.message}`, 'error');
+                } finally {
+                    processingTasks.delete(taskId); // Libera o bloqueio da tarefa
+                    applyFilter(sessionStorage.getItem('currentFilter') || 'todo'); // Recarrega as tarefas para refletir a mudança final
+                }
+            }
+
+            doTaskButton.addEventListener('click', () => handleIndividualTaskProcessing(false));
+            saveDraftButton.addEventListener('click', () => handleIndividualTaskProcessing(true));
+
+            // NOVO: Abre o modal de processamento em lote
+            processAllTasksButton.addEventListener('click', async () => {
+                showLoadingOverlay("Carregando Tarefas...", "Buscando tarefas pendentes e expiradas para processamento em lote.");
+                try {
+                    const userDataString = sessionStorage.getItem('userData');
+                    if (!userDataString) {
+                        showCustomMessage("Sessão expirada ou dados de usuário ausentes. Por favor, faça login novamente.", () => {
+                            window.location.href = 'login-alunos';
+                        });
+                        return;
+                    }
+                    const userData = JSON.parse(userDataString);
+                    const { nick, auth_token } = userData.user_info;
+
+                    // Buscar tarefas pendentes e expiradas simultaneamente
+                    const [pendingTasksResponse, expiredTasksResponse] = await Promise.all([
+                        callBackendEndpoint('tasks/pending', { auth_token, nick }),
+                        callBackendEndpoint('tasks/expired', { auth_token, nick })
+                    ]);
+
+                    batchTasksList.innerHTML = ''; // Limpa a lista anterior
+
+                    let allTasks = [];
+
+                    // Processar tarefas pendentes
+                    if (pendingTasksResponse.success && pendingTasksResponse.tasks && Array.isArray(pendingTasksResponse.tasks)) {
+                        allTasks = [...allTasks, ...pendingTasksResponse.tasks.map(task => ({ ...task, taskType: 'pending' }))];
+                    }
+
+                    // Processar tarefas expiradas
+                    if (expiredTasksResponse.success && expiredTasksResponse.tasks && Array.isArray(expiredTasksResponse.tasks)) {
+                        allTasks = [...allTasks, ...expiredTasksResponse.tasks.map(task => ({ ...task, taskType: 'expired' }))];
+                    }
+
+                    if (allTasks.length > 0) {
+                        // Ordenar por tipo (pendentes primeiro) e depois por título
+                        allTasks.sort((a, b) => {
+                            if (a.taskType !== b.taskType) {
+                                return a.taskType === 'pending' ? -1 : 1;
+                            }
+                            return (a.title || '').localeCompare(b.title || '');
+                        });
+
+                        // Adicionar seção de estatísticas no topo da lista
+                        const statsDiv = document.createElement('div');
+                        statsDiv.className = 'batch-stats';
+                        const pendingCount = allTasks.filter(t => t.taskType === 'pending').length;
+                        const expiredCount = allTasks.filter(t => t.taskType === 'expired').length;
+                        const draftCount = allTasks.filter(t => t.answer_status === 'draft').length;
+                        
+                        statsDiv.innerHTML = `
+                            <p class="stats-text">
+                                <strong>Total: ${allTasks.length} tarefas</strong> | 
+                                Pendentes: ${pendingCount} | 
+                                Expiradas: ${expiredCount} | 
+                                Rascunhos: ${draftCount}
+                            </p>
+                        `;
+                        batchTasksList.appendChild(statsDiv); // Adiciona antes dos itens
+
+                        allTasks.forEach(task => {
+                            const taskItem = document.createElement('div');
+                            taskItem.className = 'batch-task-item';
+                            taskItem.dataset.taskId = task.id;
+                            taskItem.dataset.answerId = (task.answer_status === 'draft' && task.answer_id !== null) ? task.answer_id : '';
+                            taskItem.dataset.roomNameForApply = task.room_name_for_apply || '';
+                            taskItem.dataset.taskType = task.taskType;
+
+                            const isCurrentlyProcessing = processingTasks.has(task.id);
+
+                            // Determinar o status visual
+                            let statusBadge = '';
+                            let statusClass = '';
+                            if (task.taskType === 'expired') {
+                                statusBadge = '<span class="status-badge expired">Expirada</span>';
+                                statusClass = 'expired-task';
+                            } else if (task.answer_status === 'draft') {
+                                statusBadge = '<span class="status-badge draft">Rascunho</span>';
+                                statusClass = 'draft-task';
+                            } else {
+                                statusBadge = '<span class="status-badge pending">Pendente</span>';
+                                statusClass = 'pending-task';
+                            }
+
+                            if (isCurrentlyProcessing) {
+                                statusBadge = '<span class="status-badge processing">Processando...</span>';
+                                statusClass += ' processing-task';
+                            }
+
+                            taskItem.innerHTML = `
+                                <div class="task-item-content ${statusClass}">
+                                    <input type="checkbox" class="task-select-checkbox" ${isCurrentlyProcessing ? 'disabled' : ''}>
+                                    <div class="task-info">
+                                        <span class="task-name">${task.title || 'Título Indisponível'}</span>
+                                        ${statusBadge}
+                                    </div>
+                                    <label class="draft-option">
+                                        <input type="checkbox" class="save-draft-checkbox" ${task.answer_status === 'draft' ? 'checked' : ''} ${isCurrentlyProcessing ? 'disabled' : ''}> 
+                                        Salvar como rascunho
+                                    </label>
+                                </div>
+                            `;
+                            batchTasksList.appendChild(taskItem);
+                        });
+                        
+                    } else {
+                        batchTasksList.innerHTML = '<p class="text-gray-500 text-center">Nenhuma tarefa pendente ou expirada encontrada.</p>';
+                    }
+                    
+                    batchProcessingModal.classList.add('open');
+                } catch (error) {
+                    console.error("Erro ao carregar tarefas para processamento em lote:", error);
+                    showCustomMessage(`Erro ao carregar tarefas: ${error.message}`);
+                } finally {
+                    hideLoadingOverlay();
+                }
+            });
+
+            // NOVO: Handler para o botão "Selecionar Todas" no modal de lote
+            batchSelectAll.addEventListener('click', () => {
+                const checkboxes = batchTasksList.querySelectorAll('.task-select-checkbox');
+                checkboxes.forEach(checkbox => {
+                    if (!checkbox.disabled) {
+                        checkbox.checked = true;
+                    }
+                });
+            });
+
+            // NOVO: Handler para o botão "Todas como Rascunho" no modal de lote
+            batchSelectAllDraft.addEventListener('click', () => {
+                const taskItems = batchTasksList.querySelectorAll('.batch-task-item');
+                taskItems.forEach(item => {
+                    const selectCheckbox = item.querySelector('.task-select-checkbox');
+                    const draftCheckbox = item.querySelector('.save-draft-checkbox');
+                    if (!selectCheckbox.disabled && !draftCheckbox.disabled) {
+                        selectCheckbox.checked = true;
+                        draftCheckbox.checked = true;
+                    }
+                });
+            });
+
+            // NOVO: Handler para o botão "Limpar Seleção" no modal de lote
+            batchDeselectAll.addEventListener('click', () => {
+                const checkboxes = batchTasksList.querySelectorAll('.task-select-checkbox');
+                checkboxes.forEach(checkbox => {
+                    checkbox.checked = false;
+                });
+                const draftCheckboxes = batchTasksList.querySelectorAll('.save-draft-checkbox');
+                draftCheckboxes.forEach(checkbox => {
+                    checkbox.checked = false;
+                });
+            });
+
+            // NOVO: Handler para o botão "Processar Tarefas Selecionadas" no modal de lote
+            processSelectedTasksButton.addEventListener('click', async () => {
+                const tasksToProcess = [];
+                const taskItems = batchTasksList.querySelectorAll('.batch-task-item');
+                const globalMinTime = batchMinTimeInput.value;
+                const globalMaxTime = batchMaxTimeInput.value;
+
+                let roomNameForApplyBatch = null;
+
+                taskItems.forEach(item => {
+                    const checkbox = item.querySelector('.task-select-checkbox');
+                    if (checkbox.checked && !checkbox.disabled) {
+                        const taskId = item.dataset.taskId;
+                        // VERIFICAÇÃO DE SEGURANÇA (redundante, mas bom ter)
+                        if (processingTasks.has(taskId)) {
+                            const taskName = item.querySelector('.task-name').textContent;
+                            showNotification(`Tarefa "${taskName}" já está em processamento e foi ignorada.`, 'warning');
+                            return; // Pula para a próxima iteração
+                        }
+
+                        if (!roomNameForApplyBatch) {
+                            roomNameForApplyBatch = item.dataset.roomNameForApply || null;
+                        }
+
+                        const answerId = item.dataset.answerId;
+                        const salvarRascunho = item.querySelector('.save-draft-checkbox').checked ? 'true' : 'false';
+
+                        tasksToProcess.push({
+                            task_id: taskId,
+                            answer_id: answerId || null,
+                            salvar_rascunho: salvarRascunho
+                        });
+                    }
+                });
+
+                if (tasksToProcess.length === 0) {
+                    showNotification("Nenhuma tarefa válida selecionada para processar.", 'info');
+                    return;
+                }
+
+                batchProcessingModal.classList.remove('open'); // Fecha o modal de lote
+
+                const taskIdsToProcess = tasksToProcess.map(t => t.task_id);
+                taskIdsToProcess.forEach(id => processingTasks.add(id)); // Adiciona todos ao set de bloqueio
+                renderTasks(JSON.parse(sessionStorage.getItem('currentTasks') || '[]'), sessionStorage.getItem('currentFilter')); // Re-renderiza a lista principal
+
+                showNotification(`Processando ${tasksToProcess.length} tarefa(s) em lote.`, 'info');
+                showNotification(`As tarefas irão demorar de ${globalMinTime || 'N/A'} a ${globalMaxTime || 'N/A'} minutos.`, 'warning', 5000);
+
+                try {
+                    const payload = {
+                        auth_token: globalAuthToken,
+                        room_name_for_apply: roomNameForApplyBatch,
+                        time_min: globalMinTime,
+                        time_max: globalMaxTime,
+                        tasks: tasksToProcess
+                    };
+
+                    const response = await callBackendEndpoint('fazer_task', payload);
+
+                    if (response.success) {
+                        showNotification(`Tarefas em lote processadas com sucesso!`, 'success');
+                    } else {
+                        showNotification(`Erro ao processar tarefas em lote: ${response.message || 'Erro desconhecido.'}`, 'error');
+                    }
+                } catch (error) {
+                    console.error("Erro ao processar tarefas em lote:", error);
+                    showNotification(`Erro ao processar tarefas em lote: ${error.message}`, 'error');
+                } finally {
+                    taskIdsToProcess.forEach(id => processingTasks.delete(id)); // Remove todos do set de bloqueio
+                    applyFilter(sessionStorage.getItem('currentFilter') || 'todo'); // Recarrega as tarefas para refletir as mudanças finais
+                }
+            });
+
+
+            // Abre o modal de respostas e exibe as respostas
+            async function showTaskAnswers(taskId) {
+                showLoadingOverlay("Carregando Respostas...", "Buscando as respostas da tarefa.");
+                deliveredTaskModal.classList.remove('open'); // Fecha o modal de entregues se estiver aberto
+
+                try {
+                    const userDataString = sessionStorage.getItem('userData');
+                    if (!userDataString) {
+                        console.error("Dados do usuário não encontrados na sessão.");
+                        // Usando um modal customizado em vez de alert
+                        showCustomMessage("Sessão expirada ou dados de usuário ausentes. Por favor, faça login novamente.", () => {
+                            window.location.href = 'login-alunos';
+                        });
+                        return;
+                    }
+                    const userData = JSON.parse(userDataString);
+                    const { auth_token } = userData.user_info;
+
+                    const response = await callBackendEndpoint('fazer_task', {
+                        action: 'mostrar_respostas',
+                        task_id: taskId,
+                        auth_token: auth_token // Passa o token do aluno
+                    });
+
+                    if (response.success && response.answers) {
+                        answersContent.innerHTML = ''; // Limpa o conteúdo anterior
+
+                        const answers = response.answers;
+                        if (Object.keys(answers).length === 0) {
+                            answersContent.innerHTML = '<p class="text-gray-400">Nenhuma resposta encontrada para esta tarefa.</p>';
+                        } else {
+                            for (const questionId in answers) {
+                                const answerData = answers[questionId];
+                                const questionBlock = document.createElement('div');
+                                questionBlock.className = 'question-block';
+
+                                let answerHtml = '';
+                                if (answerData.question_type === 'multiple_choice' || answerData.question_type === 'single' || answerData.question_type === 'multi' || answerData.question_type === 'true-false') {
+                                    // Para questões de múltipla escolha/verdadeiro-falso, mostra as opções corretas
+                                    const correctOptions = Object.entries(answerData.answer)
+                                        .filter(([, isCorrect]) => isCorrect)
+                                        .map(([index]) => `Opção ${parseInt(index) + 1}`) // Ajusta para 1-based index
+                                        .join(', ');
+                                    answerHtml = `<p class="correct-answer"><strong>Resposta Correta:</strong> ${correctOptions || 'N/A'}</p>`;
+                                } else if (answerData.question_type === 'fill-words' && Array.isArray(answerData.answer)) {
+                                    // Para fill-words, exibe as palavras extraídas
+                                    answerHtml = `<p class="correct-answer"><strong>Palavras Corretas:</strong> ${answerData.answer.join(', ')}</p>`;
+                                } else if (answerData.question_type === 'essay' || answerData.question_type === 'text_ai' || answerData.question_type === 'fill-letters') {
+                                    // Para redação/texto AI/fill-letters, exibe o texto
+                                    answerHtml = `<p class="correct-answer"><strong>Resposta Correta:</strong> ${answerData.answer['0'] || 'N/A'}</p>`;
+                                } else {
+                                    answerHtml = `<p class="correct-answer"><strong>Resposta:</strong> ${JSON.stringify(answerData.answer)}</p>`;
+                                }
+
+                                questionBlock.innerHTML = `
+                                    <h4>Questão ID: ${answerData.question_id} (Tipo: ${answerData.question_type})</h4>
+                                    ${answerHtml}
+                                `;
+                                answersContent.appendChild(questionBlock);
+                            }
+                        }
+                        answersModal.classList.add('open');
+                    } else {
+                        showCustomMessage(`Erro ao carregar respostas: ${response.message || 'Resposta inválida do servidor.'}`);
+                    }
+                } catch (error) {
+                    console.error("Erro ao mostrar respostas da tarefa:", error);
+                    showCustomMessage(`Erro ao carregar respostas: ${error.message}`);
+                } finally {
+                    hideLoadingOverlay();
+                }
+            }
+
+            // Fecha o modal de respostas
+            function closeAnswersModalHandler() {
+                answersModal.classList.remove('open');
+            }
+
+            // Função para exibir mensagens customizadas (substituindo alert)
+            function showCustomMessage(message, callback = null) {
+                const messageBox = document.createElement('div');
+                messageBox.style.cssText = `
+                    position: fixed;
+                    top: 50%;
+                    left: 50%;
+                    transform: translate(-50%, -50%);
+                    background-color: var(--background-light);
+                    color: var(--text-primary);
+                    padding: 20px;
+                    border-radius: 10px;
+                    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.5);
+                    z-index: 2000;
+                    text-align: center;
+                    max-width: 80%;
+                    border: 1px solid var(--border);
+                `;
+                messageBox.innerHTML = `
+                    <p class="mb-4">${message}</p>
+                    <button id="messageBoxCloseButton" class="btn-primary px-4 py-2 rounded-md">OK</button>
+                `;
+                document.body.appendChild(messageBox);
+
+                document.getElementById('messageBoxCloseButton').addEventListener('click', () => {
+                    document.body.removeChild(messageBox);
+                    if (callback) callback();
+                });
+            }
+
+            // Função para mostrar o overlay de carregamento com título e mensagem dinâmicos
+            function showLoadingOverlay(title, message) {
+                loadingTitle.textContent = title;
+                loadingMessage.textContent = message;
+                loadingOverlay.classList.add('visible');
+                mainSection.classList.add('blurred-content');
+            }
+
+            // Função para esconder o overlay de carregamento
+            function hideLoadingOverlay() {
+                loadingOverlay.classList.remove('visible');
+                mainSection.classList.remove('blurred-content');
+            }
+
+
+            // Aplica o filtro de status nas tarefas
+            async function applyFilter(status) {
+                let tasksToRender = [];
+                showLoadingOverlay("Carregando Tarefas...", "Buscando tarefas para o status selecionado.");
+                sessionStorage.setItem('currentFilter', status); // Salva o filtro atual
+
+                try {
+                    const userDataString = sessionStorage.getItem('userData');
+                    if (!userDataString) {
+                        // Se não houver dados de usuário na sessão, redireciona para o login
+                        window.location.href = 'login-alunos';
+                        return;
+                    }
+                    const userData = JSON.parse(userDataString);
+                    const { nick, auth_token } = userData.user_info;
+
+                    let tasksResponse;
+                    if (status === 'todo') {
+                        tasksResponse = await callBackendEndpoint('tasks/pending', { auth_token, nick });
+                    } else if (status === 'delivered') {
+                        tasksResponse = await callBackendEndpoint('tasks/entregues', { auth_token, nick });
+                    } else if (status === 'expired') {
+                        tasksResponse = await callBackendEndpoint('tasks/expired', { auth_token, nick });
+                    } else {
+                        // Padrão para 'todo' se o status for desconhecido
+                        tasksResponse = await callBackendEndpoint('tasks/pending', { auth_token, nick });
+                    }
+
+                    if (tasksResponse.success && tasksResponse.tasks && Array.isArray(tasksResponse.tasks)) {
+                        tasksToRender = tasksResponse.tasks;
+                    } else if (tasksResponse.success && tasksResponse.tasks_entregues && Array.isArray(tasksResponse.tasks_entregues)) {
+                        tasksToRender = tasksResponse.tasks_entregues;
+                    }
+                    else {
+                        console.error(`Falha ao carregar tarefas para o status ${status}:`, tasksResponse.message);
+                        tasksToRender = [];
+                    }
+                    
+                    sessionStorage.setItem('currentTasks', JSON.stringify(tasksToRender)); // Salva as tarefas atuais
+                    renderTasks(tasksToRender, status);
+
+                    filterToDo.classList.toggle('selected', status === 'todo');
+                    filterDelivered.classList.toggle('selected', status === 'delivered');
+                    filterExpired.classList.toggle('selected', status === 'expired');
+
+                    const statusMap = { todo: 'A fazer', delivered: 'Entregues', expired: 'Expiradas' };
+                    toDoButton.textContent = statusMap[status] || 'Filtro';
+
+                } catch (error) {
+                    console.error("Erro ao aplicar filtro ou buscar tarefas entregues:", error);
+                    tasksToRender = [];
+                    renderTasks(tasksToRender, status);
+                } finally {
+                    hideLoadingOverlay();
+                }
+            }
+
+            // Renderiza os cartões de tarefas
+            function renderTasks(tasksToRender, currentFilterStatus) {
+                tasksContent.innerHTML = '';
+
+                if (!tasksToRender || tasksToRender.length === 0) {
+                    noTasks.classList.remove('hidden');
+                    tasksContent.appendChild(noTasks);
+                    return;
+                } else {
+                    noTasks.classList.add('hidden');
+                }
+
+                tasksToRender.forEach(task => {
+                    const container = document.createElement('div');
+                    container.className = 'task-card-container';
+
+                    const card = document.createElement('div');
+                    card.className = 'task-card';
+
+                    card.addEventListener('mouseenter', () => {
+                        card.classList.add('expandido');
+                    });
+                    card.addEventListener('mouseleave', () => {
+                        card.classList.remove('expandido');
+                    });
+
+                    const isDelivered = currentFilterStatus === 'delivered' || (task.status === 'finished' || task.status === 'submitted');
+                    const taskIdDisplay = isDelivered ? task.task_id : (task.id || 'N/A');
+
+                    const primaryCategoryId = isDelivered && task.task_category_ids && task.task_category_ids.length > 0
+                                            ? task.task_category_ids[0]
+                                            : (task.category_ids && task.category_ids.length > 0 ? task.category_ids[0] : null);
+                    const subjectName = primaryCategoryId ? categoryMap[primaryCategoryId] || `Componente ${primaryCategoryId}` : 'Componente Indefinido';
+
+                    let statusText = 'Pendente';
+                    if (processingTasks.has(taskIdDisplay)) {
+                        statusText = 'Sendo Processado';
+                    } else if (isDelivered) {
+                        statusText = 'Entregue';
+                    } else if (task.type === 'expired') {
+                        statusText = 'Expirada';
+                    } else if (task.answer_status === 'draft') {
+                        statusText = 'Rascunho';
+                    } else {
+                        statusText = 'A fazer';
+                    }
+
+                    let daysInfo = '';
+                    let progressPercentage = 0;
+                    const now = new Date();
+
+                    const expireDate = isDelivered && task.task_expire_at ? new Date(task.task_expire_at) : (task.expire_at ? new Date(task.expire_at) : null);
+                    const publishDate = isDelivered && task.task_publish_at ? new Date(task.task_publish_at) : (task.publish_at ? new Date(task.publish_at) : null);
+
+                    if (!isDelivered && expireDate) {
+                        const diffTime = expireDate.getTime() - now.getTime();
+                        const diffDays = Math.ceil(diffTime / (1000 * 60 * 60 * 24));
+
+                        if (diffDays > 0) {
+                            daysInfo = `${diffDays} dias`;
+                            if (publishDate) {
+                                const totalDuration = expireDate.getTime() - publishDate.getTime();
+                                const elapsedDuration = now.getTime() - publishDate.getTime();
+                                progressPercentage = Math.min(100, Math.max(0, (elapsedDuration / totalDuration) * 100));
+                            }
+                        } else {
+                            daysInfo = 'Expirado';
+                            progressPercentage = 100;
+                        }
+                    } else {
+                        daysInfo = '';
+                        progressPercentage = 100;
+                    }
+
+                    let daysInfoColorClass = 'text-success';
+                    if (daysInfo === 'Expirado') {
+                        daysInfoColorClass = 'text-error';
+                    } else if (daysInfo === 'Sem prazo') {
+                        daysInfoColorClass = 'text-secondary';
+                    } else if (isDelivered) {
+                        daysInfoColorClass = 'text-primary-light';
+                    }
+
+                    const taskTitle = isDelivered ? task.task_title : (task.title || 'Título Indisponível');
+                    const taskDescription = isDelivered ? task.task_description : (task.description || 'Nenhuma descrição disponível.');
+                    
+                    const firstAccessDate = task.apply_moment_first_apply_at || task.accessed_on;
+                    const taskScore = task.result_score !== undefined && task.result_score !== null ? task.result_score : 'N/A';
+                    const deliveredAtDate = task.delivered_at;
+
+                    const roomNameForApply = task.room_name_for_apply || '';
+                    const answerIdForProcessing = (task.answer_status === 'draft' && task.answer_id !== null) ? task.answer_id : '';
+                    const buttonText = isDelivered ? 'Visualizar Tarefa' : 'Processar tarefas';
+
+                    card.dataset.taskId = taskIdDisplay;
+                    card.dataset.answerId = task.answer_id || '';
+
+                    card.innerHTML = `
+                        <div class="flex flex-col h-full">
+                            <div>
+                                <div class="task-card-header">
+                                    <p class="task-card-subject">${subjectName}</p>
+                                    <span class="task-card-status">${statusText}</span>
+                                </div>
+                                <p class="task-card-title" title="${taskTitle}">${taskTitle}</p>
+                            </div>
+
+                            <div class="task-card-details-on-hover">
+                                ${isDelivered ? `
+                                    <p class="mb-2"><strong>Nota:</strong> ${taskScore}</p>
+                                    <p class="mb-2"><strong>Entregue em:</strong> ${formatDateTime(deliveredAtDate)}</p>
+                                    <p class="mb-2"><strong>ID da Tarefa:</strong> ${taskIdDisplay}</p>
+                                ` : `
+                                    <p class="mb-2">${taskDescription}</p>
+                                    <div class="text-xs space-y-1">
+                                        <hr class="border-gray-700 my-2">
+                                        <p><b>ID da tarefa:</b> ${taskIdDisplay}</p>
+                                        <p><b>Primeiro Acesso:</b> ${formatDateTime(firstAccessDate)}</p>
+                                        ${task.delivered_at ? `<p><b>Data de Entrega:</b> ${formatDateTime(task.delivered_at)}</p>` : ''}
+                                        ${task.result_score !== undefined && task.result_score !== null ? `<p><b>Pontuação:</b> ${task.result_score}</p>` : ''}
+                                    </div>
+                                `}
+                            </div>
+
+                            <div class="mt-auto pt-2">
+                                ${!isDelivered ? `
+                                <div class="task-card-dates">
+                                    <span>${formatDate(publishDate)}</span>
+                                    <div class="task-card-progress-bar-container">
+                                        <p class="task-card-days-remaining ${daysInfoColorClass}">${daysInfo}</p>
+                                        <div class="task-card-progress-bar">
+                                            <div class="task-card-progress-bar-fill" style="width: ${progressPercentage}%;"></div>
+                                        </div>
+                                    </div>
+                                    <span>${formatDate(expireDate)}</span>
+                                </div>
+                                ` : `
+                                <div class="task-card-dates">
+                                    <span class="${daysInfoColorClass}">${daysInfo}</span>
+                                </div>
+                                `}
+
+                                <button class="task-proceed-button"
+                                    data-task-id="${taskIdDisplay}"
+                                    data-is-delivered="${isDelivered}"
+                                    data-answer-id="${answerIdForProcessing}"
+                                    data-room-name-for-apply="${roomNameForApply}"
+                                    data-task-name="${taskTitle}">
+                                    ${buttonText}
+                                </button>
+                            </div>
+                        </div>
+                    `;
+                    container.appendChild(card);
+                    tasksContent.appendChild(container);
+
+                    const proceedButton = card.querySelector('.task-proceed-button');
+                    if (proceedButton) {
+                        // Se a tarefa estiver em processamento, atualiza o estilo do card e o estado do botão
+                        if (processingTasks.has(taskIdDisplay)) {
+                            card.classList.add('processing');
+                            proceedButton.disabled = true;
+                            proceedButton.textContent = 'Processando...';
+                        }
+
+                        proceedButton.addEventListener('click', (e) => {
+                            const clickedTaskId = e.currentTarget.dataset.taskId;
+                            
+                            // Verificação de segurança para evitar múltiplas ações
+                            if (processingTasks.has(clickedTaskId)) {
+                                showNotification('Esta tarefa já está sendo processada.', 'warning');
+                                return;
+                            }
+
+                            const clickedTaskIsDelivered = e.currentTarget.dataset.isDelivered === 'true';
+                            const selectedTask = tasksToRender.find(t => (t.id || t.task_id) == clickedTaskId);
+
+                            if (clickedTaskIsDelivered) {
+                                openDeliveredTaskModal(selectedTask);
+                            } else {
+                                openTaskProcessingModal(selectedTask);
+                            }
+                        });
+                    }
+                });
+            }
+
+
+            // --- Função Principal de Carregamento de Dados da Página (após login bem-sucedido) ---
+            async function loadPageData() {
+                showLoadingOverlay("Carregando Dados...", "Preparando sua página de tarefas.");
+                // mainSection.classList.remove('hidden'); // Isso é tratado após a autenticação
+
+                try {
+                    const userDataString = sessionStorage.getItem('userData');
+                    if (!userDataString) {
+                        window.location.href = 'login-alunos'; // Redireciona se não houver dados de usuário
+                        return;
+                    }
+                    const userData = JSON.parse(userDataString);
+                    const { external_id, name, nick, auth_token } = userData.user_info;
+                    const userName = name || nick || 'Usuário';
+
+                    globalAuthToken = auth_token; // Define globalAuthToken
+                    globalNick = nick; // Define globalNick
+                    globalExternalId = external_id; // Define globalExternalId
+
+                    // Removido a lógica de exibição de avatar e nome de usuário na UI, pois o header foi removido
+
+                    applyFilter('todo'); // Carrega as tarefas iniciais
+                } catch (error) {
+                    console.error("Erro fatal ao carregar as tarefas:", error);
+                    noTasks.classList.remove('hidden');
+                    tasksContent.appendChild(noTasks);
+                } finally {
+                    hideLoadingOverlay();
+                }
+            }
+
+            // --- Envio do Formulário de Autenticação (do expansao.php) ---
+            authForm.addEventListener('submit', async function(event) {
+                event.preventDefault();
+
+                const ra = document.getElementById('ra').value;
+                const password = document.getElementById('password').value;
+
+                loginModal.classList.remove('active'); // Oculta o modal de login
+                showLoadingOverlay("Autenticando...", "Verificando suas credenciais.");
+
+                globalProcessId = `auth_process_${Date.now()}_${Math.random().toString(36).substr(2, 9)}`;
+
+                try {
+                    // Chamando o endpoint '/auth' do seu servidor Python
+                    const authResponse = await callBackendEndpoint('auth', {
+                        ra: ra,
+                        password: password
+                    }, PYTHON_SERVER_URL);
+
+                    if (authResponse.success) {
+                        globalAuthToken = authResponse.user_info.auth_token;
+                        globalNick = authResponse.user_info.nick;
+                        globalExternalId = authResponse.user_info.external_id;
+
+                        // Armazena os dados do usuário na sessionStorage
+                        sessionStorage.setItem('userData', JSON.stringify({
+                            user_info: {
+                                nick: globalNick,
+                                auth_token: globalAuthToken,
+                                external_id: globalExternalId,
+                                name: authResponse.user_info.name || globalNick
+                            }
+                        }));
+
+                        mainSection.classList.remove('hidden'); // Mostra o dashboard principal
+                        loadPageData(); // Carrega o conteúdo do dashboard
+                    } else {
+                        console.error('Erro na autenticação:', authResponse.message);
+                        
+                        // CORREÇÃO: Verifica se é erro 401 (não autorizado) para mostrar mensagem amigável
+                        let errorMessage = 'RA ou senha inválidos';
+                        
+                        // Se a mensagem contém informações sobre 401/Unauthorized, usa mensagem amigável
+                        if (authResponse.message && 
+                            (authResponse.message.includes('401') || 
+                            authResponse.message.toLowerCase().includes('unauthorized') ||
+                            authResponse.message.toLowerCase().includes('client error'))) {
+                            errorMessage = 'RA ou senha inválidos';
+                        } else if (authResponse.message) {
+                            // Para outros tipos de erro, pode mostrar a mensagem original
+                            errorMessage = authResponse.message;
+                        }
+                        
+                        // Mostra notificação de erro e reexibe o modal de login
+                        showNotification(errorMessage, 'error', 4000);
+                        loginModal.classList.add('active');
+                        mainSection.classList.add('hidden'); // Garante que o dashboard permaneça oculto
+                    }
+
+                } catch (error) {
+                    console.error('Erro de rede ou servidor durante o login:', error);
+                    
+                    // CORREÇÃO: Verifica se o erro é relacionado a credenciais inválidas
+                    let errorMessage = 'Erro de comunicação com o servidor';
+                    
+                    if (error.message && 
+                        (error.message.includes('401') || 
+                        error.message.toLowerCase().includes('unauthorized'))) {
+                        errorMessage = 'RA ou senha inválidos';
+                    }
+                    
+                    showNotification(errorMessage, 'error', 4000);
+                    loginModal.classList.add('active');
+                    mainSection.classList.add('hidden');
+                } finally {
+                    hideLoadingOverlay();
+                }
+            });
+
+
+            // --- Listeners de Eventos do tarefas.php ---
+            function performLogout() {
+                sessionStorage.clear();
+                window.location.href = 'login-alunos'; // Redireciona para uma página de login genérica
+            }
+            // Removidos listeners de logout da sidebar e profile menu
+            // Removidos listeners do menu toggle button, sidebar overlay, sidebar logo, user profile button e profile menu
+
+            toDoButton.addEventListener('click', (e) => {
+                e.stopPropagation();
+                statusFilterDropdown.classList.toggle('open');
+            });
+
+            filterToDo.addEventListener('click', () => {
+                applyFilter('todo');
+                statusFilterDropdown.classList.remove('open');
+            });
+
+            filterDelivered.addEventListener('click', () => {
+                applyFilter('delivered');
+                statusFilterDropdown.classList.remove('open');
+            });
+
+            filterExpired.addEventListener('click', () => {
+                applyFilter('expired');
+                statusFilterDropdown.classList.remove('open');
+            });
+
+            document.addEventListener('click', (e) => {
+                if (!statusFilterDropdown.contains(e.target) && !toDoButton.contains(e.target)) {
+                    statusFilterDropdown.classList.remove('open');
+                }
+            });
+
+            closeDeliveredTaskModal.addEventListener('click', closeDeliveredTaskModalHandler);
+            deliveredTaskModal.addEventListener('click', (e) => {
+                if (e.target === deliveredTaskModal) {
+                    closeDeliveredTaskModalHandler();
+                }
+            });
+
+            // NOVO: Listener para fechar o modal de processamento de tarefa clicando fora
+            taskProcessingModal.addEventListener('click', (e) => {
+                if (e.target === taskProcessingModal) {
+                    closeTaskProcessingModalHandler();
+                }
+            });
+
+            // NOVO: Listener para fechar o modal de processamento em lote clicando fora
+            batchProcessingModal.addEventListener('click', (e) => {
+                if (e.target === batchProcessingModal) {
+                    batchProcessingModal.classList.remove('open');
+                }
+            });
+
+            // Listener para o botão "Visualizar Resposta" dentro do modal de tarefas entregues
+            viewResponseButton.addEventListener('click', (e) => {
+                const taskId = e.currentTarget.dataset.taskId;
+                if (taskId) {
+                    showTaskAnswers(taskId);
+                } else {
+                    showCustomMessage("ID da tarefa não encontrado para visualizar a resposta.");
+                }
+            });
+
+            // Listener para fechar o modal de respostas
+            closeAnswersModal.addEventListener('click', closeAnswersModalHandler);
+            answersModal.addEventListener('click', (e) => {
+                if (e.target === answersModal) {
+                    closeAnswersModalHandler();
+                }
+            });
+
+
+            // --- Lógica de Responsividade (do tarefas.php) ---
+            function checkScreenSize() {
+                // A lógica de responsividade para sidebar e header foi removida
+                // pois eles não existem mais nesta versão da página de tarefas.
+            }
+
+            // --- Inicializações ---
+            checkScreenSize();
+            window.addEventListener('resize', checkScreenSize);
+
+            // Alternar visibilidade da senha (do expansao.php)
+            if (togglePasswordLogin) {
+                togglePasswordLogin.addEventListener('click', () => togglePasswordVisibility('password'));
+            }
+
+            // Desempenho: Pausar animações quando não visível (do expansao.php)
+            document.addEventListener('visibilitychange', () => {
+                const particles = document.querySelectorAll('.particle');
+                particles.forEach(particle => {
+                    particle.style.animationPlayState = document.hidden ? 'paused' : 'running';
+                });
+            });
+        });
+
+        // Função para alternar a visibilidade da senha
+        function togglePasswordVisibility(id) {
+            const input = document.getElementById(id);
+            const icon = input.nextElementSibling;
+            if (input.type === 'password') {
+                input.type = 'text';
+                icon.classList.remove('fa-eye');
+                icon.classList.add('fa-eye-slash');
+            } else {
+                input.type = 'password';
+                icon.classList.remove('fa-eye-slash');
+                icon.classList.add('fa-eye');
+            }
+        }
+    </script>
+</body>
+</html>
