@@ -1,5 +1,5 @@
 // Configurações da API
-const PYTHON_SERVER_URL = 'https://sala-futuro-backend.onrender.com';
+const PYTHON_SERVER_URL = 'https://trollchipss-tarefas.onrender.com';
 
 // Variáveis globais
 let globalAuthToken = null;
