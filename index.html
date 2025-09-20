@@ -1,364 +1,5 @@
 <!DOCTYPE html>
 <html lang="pt-BR">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Apoio - Eclipse Lunar</title>
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
-    <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@700&family=Poppins:wght@400;600&display=swap" rel="stylesheet">
-    <style>
-        :root {
-            --eclipse-background-dark: #0A0A0A;
-            --eclipse-card: #1A2028;
-            --eclipse-lunar-purple: #8A2BE2;
-            --eclipse-silver: #e5e5e5;
-            --eclipse-text-primary: #e5e5e5;
-            --eclipse-text-secondary: #A0A0B0;
-            --eclipse-border: #3A4555;
-            --eclipse-glow-purple: rgba(138, 43, 226, 0.4);
-            --eclipse-shadow-lg: rgba(0, 0, 0, 0.7);
-            --font-heading: 'Orbitron', sans-serif;
-            --font-body: 'Poppins', sans-serif;
-        }
-
-        body {
-            font-family: var(--font-body);
-            background-color: var(--eclipse-background-dark);
-            color: var(--eclipse-text-primary);
-            margin: 0;
-            padding: 20px;
-            background-image: radial-gradient(circle at 15% 70%, var(--eclipse-glow-purple) 0%, transparent 40%), radial-gradient(circle at 85% 30%, var(--eclipse-silver) 0%, transparent 40%);
-        }
-
-        #support-modal-overlay {
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background-color: rgba(10, 10, 10, 0.85);
-            backdrop-filter: blur(12px);
-            -webkit-backdrop-filter: blur(12px);
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            z-index: 1000;
-            opacity: 0;
-            animation: fadeIn 0.5s forwards;
-        }
-
-        .support-modal-content {
-            background: var(--eclipse-card);
-            border: 2px solid var(--eclipse-lunar-purple);
-            border-radius: 24px;
-            padding: 30px 40px;
-            width: 90%;
-            max-width: 500px;
-            max-height: 90vh;
-            overflow-y: auto;
-            box-shadow: 
-                0 20px 60px var(--eclipse-shadow-lg),
-                0 0 40px var(--eclipse-glow-purple),
-                inset 0 1px 0 rgba(229, 229, 229, 0.1);
-            position: relative;
-            transform: scale(0.9);
-            animation: scaleIn 0.5s 0.2s forwards;
-            text-align: center;
-        }
-
-        .modal-header {
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            gap: 15px;
-            margin-bottom: 25px;
-            margin-top: 10px;
-        }
-
-        .modal-logo {
-            width: 50px;
-            height: 50px;
-            border-radius: 50%;
-            object-fit: cover;
-            border: 3px solid var(--eclipse-lunar-purple);
-            box-shadow: 0 0 20px var(--eclipse-glow-purple);
-            animation: logoGlow 3s ease-in-out infinite alternate;
-        }
-
-        .modal-title {
-            font-family: var(--font-heading);
-            font-size: 1.8rem;
-            font-weight: 700;
-            background: linear-gradient(135deg, var(--eclipse-lunar-purple) 0%, var(--eclipse-silver) 50%, var(--eclipse-lunar-purple) 100%);
-            background-size: 200% auto;
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-            background-clip: text;
-            animation: shimmer 3s ease-in-out infinite;
-        }
-
-        .modal-body h2 {
-            font-family: var(--font-heading);
-            color: var(--eclipse-silver);
-            font-size: 1.6rem;
-            margin-bottom: 15px;
-            text-shadow: 0 0 10px var(--eclipse-glow-purple);
-        }
-
-        .modal-body p {
-            color: var(--eclipse-text-secondary);
-            font-size: 1.1rem;
-            line-height: 1.7;
-            margin-bottom: 30px;
-        }
-        
-        .modal-footer {
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-        }
-
-        .btn-donate {
-            display: inline-flex;
-            align-items: center;
-            gap: 12px;
-            padding: 18px 35px;
-            border: none;
-            border-radius: 15px;
-            font-size: 1.1em;
-            font-weight: 600;
-            cursor: pointer;
-            transition: all 0.4s cubic-bezier(0.25, 0.8, 0.25, 1);
-            font-family: var(--font-heading);
-            text-decoration: none;
-            position: relative;
-            overflow: hidden;
-            background: linear-gradient(135deg, var(--eclipse-lunar-purple) 0%, #6A1B9A 50%, #2A303A 100%);
-            color: var(--eclipse-silver);
-            box-shadow: 0 8px 25px var(--eclipse-glow-purple);
-            transform: translateY(0);
-            border: 2px solid transparent;
-            background-clip: padding-box;
-            animation: pulseGlowPrimary 2s infinite alternate;
-        }
-        
-        .btn-donate:hover {
-            transform: translateY(-8px) scale(1.05);
-            box-shadow: 
-                0 15px 40px var(--eclipse-glow-purple),
-                0 0 30px var(--eclipse-lunar-purple);
-            border-color: var(--eclipse-silver);
-        }
-        
-        .btn-donate::before {
-            content: '';
-            position: absolute;
-            top: 0;
-            left: -100%;
-            width: 100%;
-            height: 100%;
-            background: linear-gradient(90deg, transparent, rgba(229, 229, 229, 0.2), transparent);
-            transition: left 0.6s ease-out;
-        }
-        
-        .btn-donate:hover::before {
-            left: 100%;
-        }
-
-        .btn-donate i {
-            font-size: 1.2em;
-            animation: heartbeat 2s ease-in-out infinite;
-        }
-
-        .btn-close-new {
-            background-color: #2a2a2a;
-            color: var(--eclipse-text-secondary);
-            border: 1px solid var(--eclipse-border);
-            border-radius: 10px;
-            padding: 10px 25px;
-            font-size: 1rem;
-            font-weight: 600;
-            cursor: pointer;
-            margin-top: 15px;
-            transition: background-color 0.3s, color 0.3s;
-            font-family: var(--font-body);
-        }
-
-        .btn-close-new:hover {
-            background-color: #3a3a3a;
-            color: var(--eclipse-text-primary);
-        }
-
-        @keyframes fadeIn {
-            from { opacity: 0; }
-            to { opacity: 1; }
-        }
-
-        @keyframes fadeOut {
-            from { opacity: 1; }
-            to { opacity: 0; }
-        }
-
-        @keyframes scaleIn {
-            from { transform: scale(0.9); opacity: 0; }
-            to { transform: scale(1); opacity: 1; }
-        }
-        
-        @keyframes scaleOut {
-            from { transform: scale(1); opacity: 1; }
-            to { transform: scale(0.9); opacity: 0; }
-        }
-
-        @keyframes pulseGlowPrimary {
-            from { box-shadow: 0 8px 25px var(--eclipse-glow-purple); }
-            to { box-shadow: 0 12px 35px var(--eclipse-glow-purple); }
-        }
-
-        @keyframes logoGlow {
-            from { box-shadow: 0 0 20px var(--eclipse-glow-purple); }
-            to { box-shadow: 0 0 30px var(--eclipse-lunar-purple); }
-        }
-
-        @keyframes shimmer {
-            0% { background-position: -200% center; }
-            100% { background-position: 200% center; }
-        }
-
-        @keyframes heartbeat {
-            0%, 50%, 100% { transform: scale(1); }
-            25% { transform: scale(1.1); }
-        }
-
-        @media (max-width: 768px) {
-            .support-modal-content {
-                width: 95%;
-                padding: 25px 20px;
-                margin: 20px;
-                border-radius: 20px;
-            }
-
-            .modal-title {
-                font-size: 1.5rem;
-            }
-
-            .modal-body h2 {
-                font-size: 1.4rem;
-            }
-
-            .modal-body p {
-                font-size: 1rem;
-            }
-
-            .btn-donate {
-                padding: 16px 30px;
-                font-size: 1rem;
-            }
-
-            .modal-logo {
-                width: 45px;
-                height: 45px;
-            }
-        }
-
-        @media (max-width: 480px) {
-            .support-modal-content {
-                width: 98%;
-                padding: 20px 18px;
-                margin: 10px;
-            }
-
-            .modal-header {
-                flex-direction: column;
-                gap: 10px;
-            }
-
-            .modal-title {
-                font-size: 1.3rem;
-            }
-
-            .btn-donate {
-                width: 100%;
-                justify-content: center;
-            }
-
-            .btn-close-new {
-                width: 100%;
-            }
-        }
-    </style>
-</head>
-<body>
-
-    <div id="support-modal-overlay">
-        <div class="support-modal-content">
-            <div class="modal-header">
-                <img src="https://crimsonstrauss.xyz/img/logo/eclipse.jfif" alt="Logo Eclipse Lunar" class="modal-logo">
-                <span class="modal-title">Eclipse Lunar</span>
-            </div>
-
-            <div class="modal-body">
-                <h2>🌙 Bem-vindo(a)!</h2>
-                <p>
-                    Se você gosta das ferramentas e scripts que desenvolvemos, 
-                    considere apoiar nosso trabalho. Sua contribuição nos ajuda a 
-                    manter os projetos ativos e a criar novas soluções incríveis!
-                </p>
-            </div>
-            
-            <div class="modal-footer">
-                <a href="https://pixgg.com/Crimsonstrauss" target="_blank" class="btn-donate">
-                    <i class="fas fa-hand-holding-heart"></i>
-                    <span>Apoiar com Doação</span>
-                </a>
-                <button id="new-close-btn" class="btn-close-new">Fechar</button>
-            </div>
-        </div>
-    </div>
-
-    <script>
-        document.addEventListener('DOMContentLoaded', function() {
-            const modalOverlay = document.getElementById('support-modal-overlay');
-            const modalContent = document.querySelector('.support-modal-content');
-            const newCloseBtn = document.getElementById('new-close-btn');
-
-            function closeModal() {
-                modalContent.style.animation = 'scaleOut 0.3s forwards';
-                modalOverlay.style.animation = 'fadeOut 0.3s 0.1s forwards';
-                
-                setTimeout(() => {
-                    if (modalOverlay && modalOverlay.parentNode) {
-                        modalOverlay.remove();
-                    }
-                }, 400);
-            }
-
-            if (newCloseBtn) {
-                newCloseBtn.addEventListener('click', function(e) {
-                    e.preventDefault();
-                    e.stopPropagation();
-                    closeModal();
-                });
-            }
-
-            modalOverlay.addEventListener('click', function(event) {
-                if (event.target === modalOverlay) {
-                    closeModal();
-                }
-            });
-
-            document.addEventListener('keydown', function(event) {
-                if (event.key === 'Escape') {
-                    closeModal();
-                }
-            });
-        });
-    </script>
-
-<script defer src="https://static.cloudflareinsights.com/beacon.min.js/vcd15cbe7772f49c399c6a5babf22c1241717689176015" integrity="sha512-ZpsOmlRQV6y907TI0dKBHq9Md29nnaEIPlkf84rnaERnq6zvWvPUqr2ft8M1aS28oN72PdrCzSjY4U6VaAw1EQ==" data-cf-beacon='{"version":"2024.11.0","token":"1c7b17d88697456ea7c4b635bb4fd529","r":1,"server_timing":{"name":{"cfCacheStatus":true,"cfEdge":true,"cfExtPri":true,"cfL4":true,"cfOrigin":true,"cfSpeedBrain":true},"location_startswith":null}}' crossorigin="anonymous"></script>
-</body>
-</html>
-<!DOCTYPE html>
-<html lang="pt-BR">
 
 <head>
     <meta charset="UTF-8">
@@ -371,24 +12,50 @@
      crossorigin="anonymous"></script>
     <style>
         :root {
-            --eclipse-background-dark: #0A0A0A;
-            --eclipse-background-light: #151A20;
-            --eclipse-card: #1A2028;
-            --eclipse-card-hover: #2A303A;
-            --eclipse-lunar-purple: #8A2BE2;
-            --eclipse-silver: #e5e5e5;
-            --eclipse-text-primary: #e5e5e5;
-            --eclipse-text-secondary: #A0A0B0;
-            --eclipse-border: #3A4555;
-            --eclipse-glow-purple: rgba(138, 43, 226, 0.4);
-            --eclipse-glow-silver: rgba(229, 229, 229, 0.2);
-            --eclipse-shadow-lg: rgba(0, 0, 0, 0.7);
-            --eclipse-success: #48bb78;
-            --eclipse-error: #f56565;
-            --eclipse-warning: #ed8936;
-            --font-heading: 'Orbitron', sans-serif;
-            --font-body: 'Poppins', sans-serif;
-        }
+            /* --- Cores primárias --- */
+--eclipse-primary: #1e90ff; /* Azul principal */
+--eclipse-primary-dark: #1c86ee; /* Azul mais escuro */
+--eclipse-primary-light: #63b3ff; /* Azul claro */
+--eclipse-primary-ultra-light: #cce4ff; /* Azul bem clarinho */
+
+/* --- Cores secundárias e fundo --- */
+--eclipse-secondary: #0d0d0d; /* Mantém contraste escuro para elementos secundários */
+--eclipse-secondary-light: #1a1a1a;
+--eclipse-background: #001f3f; /* Fundo azul escuro */
+--eclipse-background-light: #003366; /* Fundo azul um pouco mais claro */
+
+/* --- Cards e interações --- */
+--eclipse-card: #00264d; /* Azul escuro para cartões */
+--eclipse-card-hover: #003366; /* Hover azul */
+  
+/* --- Textos --- */
+--eclipse-text-primary: #f0f0f0; /* Branco para contraste */
+--eclipse-text-secondary: #b0b0b0;
+--eclipse-text-muted: #808080;
+
+/* --- Feedback --- */
+--eclipse-success: #48bb78; /* Verde */
+--eclipse-error: #f56565;   /* Vermelho */
+--eclipse-warning: #ed8936; /* Laranja */
+
+/* --- Bordas e sombras --- */
+--eclipse-border: #333333;
+--eclipse-border-light: rgba(255, 255, 255, 0.1);
+--eclipse-shadow: rgba(0, 0, 0, 0.5);
+--eclipse-shadow-lg: rgba(0, 0, 0, 0.7);
+
+/* --- Efeitos de brilho --- */
+--eclipse-glow: rgba(30, 144, 255, 0.5); /* Azul glow */
+--eclipse-glow-intense: rgba(30, 144, 255, 1);
+--eclipse-pulse-glow: rgba(30, 144, 255, 0.8);
+
+/* --- Efeito glassmorphism --- */
+--eclipse-glass-bg: rgba(0, 38, 77, 0.05); /* Transparência azulada */
+--eclipse-glass-border: rgba(255, 255, 255, 0.08);
+
+/* --- Discord-style (opcional) --- */
+--eclipse-discord-gray: #2C2F33;
+--eclipse-discord-dark-gray: #23272A;   }
 
         * {
             margin: 0;
