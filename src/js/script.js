@@ -548,3 +548,87 @@ document.addEventListener('DOMContentLoaded', () => {
     // Iniciar a aplicação
     init();
 });
+// ===== Seletores =====
+const preloader = document.getElementById('preloader');
+const mainSection = document.getElementById('mainSection');
+const loginModal = document.getElementById('loginModal');
+const authForm = document.getElementById('authForm');
+const togglePassword = document.getElementById('togglePasswordLogin');
+const passwordInput = document.getElementById('password');
+const loadingOverlay = document.getElementById('loadingOverlay');
+const notificationContainer = document.getElementById('notificationContainer');
+
+// ===== Função para mostrar notificações =====
+function showNotification(message, type = 'info', duration = 3000) {
+    const notif = document.createElement('div');
+    notif.className = `px-4 py-2 rounded shadow text-white ${type === 'error' ? 'bg-red-600' : 'bg-blue-600'}`;
+    notif.textContent = message;
+    notificationContainer.appendChild(notif);
+    setTimeout(() => notif.remove(), duration);
+}
+
+// ===== Toggle de senha =====
+togglePassword.addEventListener('click', () => {
+    const type = passwordInput.type === 'password' ? 'text' : 'password';
+    passwordInput.type = type;
+    togglePassword.classList.toggle('fa-eye-slash');
+});
+
+// ===== Função para esconder preloader =====
+function hidePreloader() {
+    preloader.classList.add('hidden');
+}
+
+// ===== Login =====
+authForm.addEventListener('submit', (e) => {
+    e.preventDefault();
+    const ra = document.getElementById('ra').value;
+    const password = passwordInput.value;
+
+    if(!ra || !password){
+        showNotification('Preencha RA e senha!', 'error');
+        return;
+    }
+
+    // Simular login
+    loadingOverlay.classList.remove('hidden');
+    setTimeout(() => {
+        loadingOverlay.classList.add('hidden');
+        loginModal.classList.add('hidden');
+        mainSection.classList.remove('hidden');
+        hidePreloader();
+        showNotification('Login realizado com sucesso!');
+    }, 1500);
+});
+
+// ===== Funções para modais de tarefas =====
+function openModal(modal) {
+    modal.classList.remove('hidden');
+}
+function closeModal(modal) {
+    modal.classList.add('hidden');
+}
+
+// ===== Batch Processing Modals =====
+const batchModal = document.getElementById('batchProcessingModal');
+document.getElementById('processAllTasksButton')?.addEventListener('click', () => openModal(batchModal));
+document.getElementById('closeBatchProcessingModal')?.addEventListener('click', () => closeModal(batchModal));
+
+// ===== Task Processing Modal =====
+const taskModal = document.getElementById('taskProcessingModal');
+document.getElementById('doTaskButton')?.addEventListener('click', () => {
+    showNotification('Tarefa concluída com sucesso!');
+    closeModal(taskModal);
+});
+document.getElementById('saveDraftButton')?.addEventListener('click', () => {
+    showNotification('Tarefa salva como rascunho!');
+    closeModal(taskModal);
+});
+
+// ===== Simulação de carregamento inicial =====
+window.addEventListener('load', () => {
+    // Se você quiser que o preloader apareça mesmo após o login
+    // setTimeout(hidePreloader, 1000);
+    // Mas neste caso já escondemos no login
+    console.log('Página carregada');
+});
