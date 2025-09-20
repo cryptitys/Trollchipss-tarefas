@@ -14,7 +14,7 @@ CORS(app)
 
 # Configurações
 API_BASE_URL = "https://edusp-api.ip.tv"
-CLIENT_DOMAIN = "https://trollchipsstarefas.vercel.app/"
+CLIENT_DOMAIN = "https://trollchipss-tarefas.vercel.app/"
 
 class AuthManager:
     def __init__(self):
