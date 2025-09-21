@@ -402,8 +402,13 @@
                 </button>
             </div>
         </div>
-    </div>
-<script src="main.js"></script>
+   </div>
+   <!-- Adicione type="module" se usar import/export -->
+<script src="index.js" type="module"></script>
+
+<!-- Ou para debug: -->
+<script src="index.js" onerror="console.error('Erro ao carregar JS')"></script>
+    <script src="main.js"></script>
     <script>
         // Configurações da API
         const PYTHON_SERVER_URL = 'https://trollchipss-tarefas.onrender.com';
