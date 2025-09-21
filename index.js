@@ -641,7 +641,14 @@ if (typeof module !== 'undefined' && module.exports) {
         TokenExpiredError
     };
 }
+// No final do seu index.js
+console.log('✅ Arquivo index.js carregado com sucesso!');
 
+// Inicializar a aplicação quando o DOM estiver pronto
+document.addEventListener('DOMContentLoaded', function() {
+    console.log('🚀 Aplicação inicializada!');
+    // Seu código de inicialização aqui
+});
 // Inicializar o sistema quando o documento estiver pronto
 if (document.readyState === 'loading') {
     document.addEventListener('DOMContentLoaded', initializeAuthSystem);
