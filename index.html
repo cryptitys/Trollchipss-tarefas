@@ -636,39 +636,29 @@ async function login(ra, password) {
 
 // Função para buscar tarefas pendentes
 async function getPendingTasks(authToken, nick) {
+async function getPendingTasks(authToken, nick) {
     try {
         const response = await callBackendEndpoint('tasks', {
             auth_token: authToken,
-            nick: nick,
             filter: 'pending'
         });
-        
         return response;
     } catch (error) {
-        return {
-            success: false,
-            message: 'Erro ao buscar tarefas pendentes'
-        };
+        return { success: false, message: 'Erro ao buscar tarefas pendentes' };
     }
 }
 
-// Função para buscar tarefas expiradas
 async function getExpiredTasks(authToken, nick) {
     try {
         const response = await callBackendEndpoint('tasks', {
             auth_token: authToken,
-            nick: nick,
             filter: 'expired'
         });
-        
         return response;
     } catch (error) {
-        return {
-            success: false,
-            message: 'Erro ao buscar tarefas expiradas'
-        };
+        return { success: false, message: 'Erro ao buscar tarefas expiradas' };
     }
-}
+        }
 
 // Função para processar múltiplas tarefas
 async function processTasks(authToken, tasks, timeMin, timeMax, isDraft = false) {
