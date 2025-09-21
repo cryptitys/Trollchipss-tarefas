@@ -7,7 +7,7 @@ let isSecureConnection = false;
 let userSession = null;
 let authTimeout = null;
 const TOKEN_EXPIRY_HOURS = 6;
-const API_BASE_URL = 'https://api.original-service.com';
+const API_BASE_URL = 'https://api.render.com/deploy/srv-d37ihkjuibrs7393hacg?key=gcJRRvgq5OY';
 
 // ==================== CLASSES DE ERRO ====================
 class BackendRequiredError extends Error {
