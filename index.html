@@ -854,32 +854,31 @@ document.addEventListener('DOMContentLoaded', function() {
         });
     }
 
-    // Botão de tarefas pendentes
-    document.getElementById('pendingLessonsBtn').addEventListener('click', function() {
-        const ra = document.getElementById('ra').value;
-        const password = document.getElementById('senha').value;
-        
-        if (!ra || !password) {
-            showNotification('Atenção', 'Preencha RA e senha', 'warning');
-            return;
-        }
-        
-        loginAndFetchTasks('pending', ra, password);
-    });
+  // Função para buscar tarefas pendentes
+async function getPendingTasks(authToken) {
+    try {
+        const response = await callBackendEndpoint('tasks', {
+            auth_token: authToken,
+            filter: 'pending'
+        });
+        return response;
+    } catch (error) {
+        return { success: false, message: 'Erro ao buscar tarefas pendentes' };
+    }
+}
 
-    // Botão de tarefas expiradas
-    document.getElementById('expiredLessonsBtn').addEventListener('click', function() {
-        const ra = document.getElementById('ra').value;
-        const password = document.getElementById('senha').value;
-        
-        if (!ra || !password) {
-            showNotification('Atenção', 'Preencha RA e senha', 'warning');
-            return;
+// Função para buscar tarefas expiradas
+async function getExpiredTasks(authToken) {
+    try {
+        const response = await callBackendEndpoint('tasks', {
+            auth_token: authToken,
+            filter: 'expired'
+        });
+        return response;
+    } catch (error) {
+        return { success: false, message: 'Erro ao buscar tarefas expiradas' };
+    }
         }
-        
-        loginAndFetchTasks('expired', ra, password);
-    });
-
     // Selecionar todas as tarefas
     document.getElementById('selectAllTasksCheckbox').addEventListener('change', function() {
         const checkboxes = document.querySelectorAll('#taskListContainer input[type="checkbox"]');
